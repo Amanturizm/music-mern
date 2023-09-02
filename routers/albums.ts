@@ -2,7 +2,6 @@ import express from "express";
 import { imagesUpload } from '../multer';
 import Album from '../models/album';
 import { IAlbum } from '../types';
-import { Error } from 'mongoose';
 
 const albumsRouter = express.Router();
 
