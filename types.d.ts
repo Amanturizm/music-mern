@@ -22,3 +22,9 @@ export interface ITrack {
   album: string;
   duration: string;
 }
+
+export interface IUser {
+  username: string;
+  password: string;
+  token: string;
+}
