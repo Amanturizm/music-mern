@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import User from '../models/user';
 import bcrypt from 'bcrypt';
+import User from '../models/user';
 
 const usersRouter = express.Router();
 
@@ -30,24 +30,20 @@ usersRouter.post('/sessions', async (req, res, next) => {
     const user = await User.findOne({ username: req.body.username });
 
     if (!user) {
-      return res.status(401).send({error: 'Wrong username or password!'});
+      return res.status(400).send({ error: 'Wrong username or password!' });
     }
 
     const isMatch = await bcrypt.compare(req.body.password, user.password);
 
     if (!isMatch) {
-      return res.status(401).send({error: 'Wrong username or password!'});
+      return res.status(400).send({ error: 'Wrong username or password!' });
     }
 
     user.generateToken();
     await user.save();
 
-    return res.send({message: 'Username and password correct!'});
+    return res.send({ message: 'Username and password correct!' });
   } catch (e) {
-    if (e instanceof mongoose.Error.ValidationError) {
-      return res.status(400).send(e);
-    }
-
     return next(e);
   }
 });
