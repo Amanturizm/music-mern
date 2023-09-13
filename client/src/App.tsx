@@ -1,7 +1,8 @@
 import React from 'react';
+import Artists from './features/artists/Artists';
 
 const App = () => (
-  <div></div>
+  <Artists />
 );
 
 export default App;
