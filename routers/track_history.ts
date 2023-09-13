@@ -1,8 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import User from '../models/user';
+import User from '../models/User';
 import { IUser } from '../types';
-import Track_history from '../models/track_history';
+import Track_history from '../models/Track_history';
 
 const trackHistoryRouter = express.Router();
 

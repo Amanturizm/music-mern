@@ -1,6 +1,6 @@
 import { model, Schema, Types } from 'mongoose';
-import User from './user';
-import Track from './track';
+import User from './User';
+import Track from './Track';
 
 const TrackHistorySchema = new Schema({
   user: {

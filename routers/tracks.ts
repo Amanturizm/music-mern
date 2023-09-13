@@ -1,8 +1,8 @@
 import express from "express";
-import Track from '../models/track';
+import Track from '../models/Track';
 import { IAlbum, IAlbumMutation, ITrack } from '../types';
-import Album from '../models/album';
-import album from '../models/album';
+import Album from '../models/Album';
+import album from '../models/Album';
 
 const tracksRouter = express.Router();
 

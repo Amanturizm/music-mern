@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import config from './config';
-import Artist from './models/artist';
-import Album from './models/album';
-import Track from './models/track';
+import Artist from './models/Artist';
+import Album from './models/Album';
+import Track from './models/Track';
 
 (async () => {
   await mongoose.connect(config.db);

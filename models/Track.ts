@@ -1,6 +1,6 @@
 import mongoose, { Types } from 'mongoose';
-import Artist from './artist';
-import Album from './album';
+import Artist from './Artist';
+import Album from './Album';
 
 const Schema = mongoose.Schema;
 

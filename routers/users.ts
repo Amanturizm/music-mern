@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-import User from '../models/user';
+import User from '../models/User';
 
 const usersRouter = express.Router();
 
