@@ -6,14 +6,12 @@ interface State {
   albums: IAlbum[];
   currentAlbum: IAlbumFull | null;
   albumsLoading: boolean;
-  currentAlbumLoading: boolean;
 }
 
 const initialState: State = {
   albums: [],
   currentAlbum: null,
   albumsLoading: false,
-  currentAlbumLoading: false,
 };
 
 const albumsSlice = createSlice({
@@ -32,15 +30,8 @@ const albumsSlice = createSlice({
       state.albumsLoading = false;
     });
 
-    builder.addCase(fetchAlbum.pending, (state: State) => {
-      state.currentAlbumLoading = true;
-    });
     builder.addCase(fetchAlbum.fulfilled, (state: State, { payload }) => {
-      state.currentAlbumLoading = false;
       state.currentAlbum = payload;
-    });
-    builder.addCase(fetchAlbum.rejected, (state: State) => {
-      state.currentAlbumLoading = false;
     });
   },
 });

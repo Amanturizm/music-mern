@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, CardMedia, Grid, Typography } from '@mui/material';
+import { Box, CardMedia, CircularProgress, Grid, LinearProgress, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { fetchAlbums } from './AlbumsThunk';
+import VerifiedIcon from '@mui/icons-material/Verified';
 import MusicCard from '../../components/UI/MusicCard';
 import { fetchArtists } from '../artists/ArtistsThunk';
 import { apiUrl } from '../../constants';
@@ -13,7 +14,7 @@ const Albums = () => {
   const { id } = useParams() as { id: string };
 
   const dispatch = useAppDispatch();
-  const { albums } = useAppSelector(state => state.albums);
+  const { albums, albumsLoading } = useAppSelector(state => state.albums);
   const { artists } = useAppSelector(state => state.artists);
 
   const [currentArtist, setCurrentArtist] = useState<IArtist | null>(null);
@@ -32,40 +33,56 @@ const Albums = () => {
   }, [artists, id]);
 
   return (
-    <Box component="div" margin={13}>
-      { currentArtist ?
-        <Box component="div"
-             display="flex"
-             justifyContent="center"
-             alignItems="center"
-             gap={5}
-        >
-          <CardMedia
-            sx={{ height: 140, width: 140, borderRadius: '50%' }}
-            image={apiUrl + currentArtist.image}
-          />
-          <Typography variant="h3">
-            {currentArtist.name}
-          </Typography>
-        </Box> : null
-      }
-      <Grid container
-            justifyContent="center"
-            gap={4}
-            marginY={5}
-      >
-        {
-          albums.map(album =>
-            <MusicCard album={album}
-                       onClick={() => navigate('/album/' + album._id)}
-                       key={album._id}/>
-          )
+    <>
+      {albumsLoading && <LinearProgress color="inherit" />}
+      <Box component="div" margin={13}>
+        { currentArtist ?
+          <Box component="div"
+               display="flex"
+               alignItems="center"
+               gap={5}
+          >
+            <CardMedia
+              sx={{ height: 225, width: 225, borderRadius: '50%' }}
+              image={apiUrl + currentArtist.image}
+            />
+            <Typography variant="h2"
+                        display="flex"
+                        alignItems="center"
+                        gap={2}
+                        position="relative"
+            >
+              {currentArtist.name}
+              <Box component="div"
+                   width={30}
+                   height={25}
+                   position="absolute"
+                   top={25}
+                   right={15}
+                   bgcolor="#fff"
+              >
+              </Box>
+              <VerifiedIcon color="primary" sx={{ fontSize: 60, zIndex: 1 }} />
+            </Typography>
+          </Box> : <CircularProgress size={100} />
         }
-      </Grid>
-      <Typography variant="h6" textAlign="center">
-        {currentArtist?.info}
-      </Typography>
-    </Box>
+        <Grid container
+              gap={4}
+              marginY={5}
+        >
+          {
+            albums.map(album =>
+              <MusicCard album={album}
+                         onClick={() => navigate('/album/' + album._id)}
+                         key={album._id}/>
+            )
+          }
+        </Grid>
+        <Typography variant="h6">
+          {currentArtist?.info}
+        </Typography>
+      </Box>
+    </>
   );
 };
 

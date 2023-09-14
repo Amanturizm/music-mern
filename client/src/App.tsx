@@ -11,7 +11,7 @@ const App = () => (
       <AppToolbar />
     </header>
 
-    <main style={{ marginTop: 70 }}>
+    <main style={{ marginTop: 65 }}>
       <Routes>
         <Route path="/" element={<Artists />} />
         <Route path="/artist/:id" element={<Albums />} />

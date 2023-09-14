@@ -23,7 +23,7 @@ const Track: React.FC<Props> = ({ track }) => {
     <CssBox component="div">
       <Box component="div"
            display="flex"
-           gap={3}
+           gap={4}
       >
         <Typography variant="h6" minWidth={25} textAlign="end">
           {track.number}
