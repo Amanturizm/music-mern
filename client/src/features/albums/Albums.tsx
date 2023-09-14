@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, CardMedia, Grid, Typography } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { fetchAlbums } from './AlbumsThunk';
 import MusicCard from '../../components/UI/MusicCard';
@@ -9,11 +9,13 @@ import { apiUrl } from '../../constants';
 import { IArtist } from '../../types';
 
 const Albums = () => {
+  const navigate = useNavigate();
   const { id } = useParams() as { id: string };
 
   const dispatch = useAppDispatch();
   const { albums } = useAppSelector(state => state.albums);
   const { artists } = useAppSelector(state => state.artists);
+
   const [currentArtist, setCurrentArtist] = useState<IArtist | null>(null);
 
   useEffect(() => {
@@ -30,9 +32,7 @@ const Albums = () => {
   }, [artists, id]);
 
   return (
-    <Box component="div"
-         margin={13}
-    >
+    <Box component="div" margin={13}>
       { currentArtist ?
         <Box component="div"
              display="flex"
@@ -54,7 +54,15 @@ const Albums = () => {
             gap={4}
             marginY={5}
       >
-        { albums.map(album => <MusicCard item={album} key={album._id} />) }
+        {
+          albums.map(album =>
+            <MusicCard
+              item={album}
+              onClick={() => navigate('/album/' + album._id)}
+              key={album._id}
+            />
+          )
+        }
       </Grid>
       <Typography variant="h6" textAlign="center">
         {currentArtist?.info}

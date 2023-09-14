@@ -9,7 +9,15 @@ export interface IAlbum {
   _id: string;
   name: string;
   artist: string;
-  date: string;
+  date: number;
+  image: string | null;
+}
+
+export interface IAlbumFull {
+  _id: string;
+  name: string;
+  artist: IArtist;
+  date: number;
   image: string | null;
 }
 
@@ -17,6 +25,7 @@ export interface ITrack {
   _id: string;
   name: string;
   album: string;
+  number: number;
   duration: string;
 }
 

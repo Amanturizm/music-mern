@@ -20,6 +20,7 @@ export interface IAlbumMutation extends IAlbum {
 export interface ITrack {
   name: string;
   album: string;
+  number: number;
   duration: string;
 }
 

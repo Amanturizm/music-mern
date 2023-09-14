@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { fetchArtists } from './ArtistsThunk';
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import MusicCard from '../../components/UI/MusicCard';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,20 +15,18 @@ const Artists = () => {
   }, [dispatch]);
 
   return (
-    <Grid container
-          justifyContent="center"
-          gap={4}
-          marginTop={15}
-    >
-      {
-        artists.map(artist =>
-          <MusicCard item={artist}
-                     isArtist
-                     onClick={() => navigate('/artist/' + artist._id)}
-                     key={artist._id} />
-        )
-      }
-    </Grid>
+    <Box component="div" margin={13}>
+      <Grid container justifyContent="center" gap={5}>
+        {
+          artists.map(artist =>
+            <MusicCard item={artist}
+                       isArtist
+                       onClick={() => navigate('/artist/' + artist._id)}
+                       key={artist._id} />
+          )
+        }
+      </Grid>
+    </Box>
   );
 };
 

@@ -13,7 +13,7 @@ tracksRouter.get("/", async (req, res) => {
 
       return res.send(currentAlbumTracks);
     }
-    const tracks = await Track.find().populate("album", "name artist date");
+    const tracks = await Track.find();
     return res.send(tracks);
   } catch {
     return res.sendStatus(500);
@@ -46,6 +46,7 @@ tracksRouter.post("/", async (req, res) => {
   const trackAssembly: ITrack = {
     name: req.body.name,
     album: req.body.album,
+    number: req.body.number,
     duration: req.body.duration,
   };
 
