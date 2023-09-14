@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { fetchArtists } from './ArtistsThunk';
+import { Grid } from '@mui/material';
+import MusicCard from '../../components/UI/MusicCard';
 
 const Artists = () => {
   const dispatch = useAppDispatch();
@@ -11,11 +13,15 @@ const Artists = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <Grid container
+          justifyContent="center"
+          gap={4}
+          marginTop={15}
+    >
       {
-        artists.map(artist => <div>{artist.name}</div>)
+        artists.map(artist => <MusicCard item={artist} key={artist._id} />)
       }
-    </div>
+    </Grid>
   );
 };
 
