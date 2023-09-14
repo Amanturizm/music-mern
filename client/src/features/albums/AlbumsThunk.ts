@@ -7,7 +7,6 @@ export const fetchAlbums = createAsyncThunk<IAlbum[], string>(
   async (id) => {
     const { data } = await axiosApi('albums?artist=' + id);
 
-    console.log(data);
     if (!data) return [];
 
     return data;

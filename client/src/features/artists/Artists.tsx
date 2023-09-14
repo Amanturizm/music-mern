@@ -19,8 +19,7 @@ const Artists = () => {
       <Grid container justifyContent="center" gap={5}>
         {
           artists.map(artist =>
-            <MusicCard item={artist}
-                       isArtist
+            <MusicCard artist={artist}
                        onClick={() => navigate('/artist/' + artist._id)}
                        key={artist._id} />
           )

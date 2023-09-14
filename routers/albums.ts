@@ -1,18 +1,28 @@
 import express from "express";
 import { imagesUpload } from '../multer';
 import Album from '../models/Album';
-import { IAlbum } from '../types';
+import { IAlbum, IAlbumMutation, ITrack } from '../types';
+import Track from '../models/Track';
 
 const albumsRouter = express.Router();
 
 albumsRouter.get("/", async (req, res) => {
   try {
     if (req.query.artist) {
-      const currentArtistAlbums = await Album.find({ artist: req.query.artist });
+      const currentArtistAlbums = await Album
+        .find({ artist: req.query.artist })
+        .sort({ date: -1 });
 
-      return res.send(currentArtistAlbums);
+      const albumsWithAmountTracks = await Promise.all(
+        currentArtistAlbums.map(async ({ _id, name, artist, date, image }) => {
+          const tracks = await Track.find({ album: _id }) as ITrack[];
+
+          return { _id, name, artist, date, image, amount: tracks.length };
+        }));
+
+      return res.send(albumsWithAmountTracks);
     }
-    const albums = await Album.find().populate("artist", "name image");
+    const albums = await Album.find().sort({ date: -1 });;
     return res.send(albums);
   } catch {
     return res.sendStatus(500);

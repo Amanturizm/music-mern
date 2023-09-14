@@ -56,11 +56,9 @@ const Albums = () => {
       >
         {
           albums.map(album =>
-            <MusicCard
-              item={album}
-              onClick={() => navigate('/album/' + album._id)}
-              key={album._id}
-            />
+            <MusicCard album={album}
+                       onClick={() => navigate('/album/' + album._id)}
+                       key={album._id}/>
           )
         }
       </Grid>

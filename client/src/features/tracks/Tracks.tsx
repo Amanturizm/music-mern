@@ -51,7 +51,7 @@ const Tracks = () => {
             image={apiUrl + currentAlbum.image}
           />
           <Box>
-            <Typography variant="h3">
+            <Typography variant="h3" fontWeight="bold">
               {currentAlbum.name}
             </Typography>
 

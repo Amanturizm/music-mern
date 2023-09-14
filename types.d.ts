@@ -11,6 +11,7 @@ export interface IAlbum {
   artist: string;
   date: string;
   image: string | null;
+  amount?: number;
 }
 
 export interface IAlbumMutation extends IAlbum {

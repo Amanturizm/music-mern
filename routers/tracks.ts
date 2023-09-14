@@ -9,11 +9,13 @@ const tracksRouter = express.Router();
 tracksRouter.get("/", async (req, res) => {
   try {
     if (req.query.album) {
-      const currentAlbumTracks = await Track.find({ album: req.query.album });
+      const currentAlbumTracks = await Track
+        .find({ album: req.query.album })
+        .sort({ number: 1 });
 
       return res.send(currentAlbumTracks);
     }
-    const tracks = await Track.find();
+    const tracks = await Track.find().sort({ number: 1 });;
     return res.send(tracks);
   } catch {
     return res.sendStatus(500);

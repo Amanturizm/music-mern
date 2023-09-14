@@ -11,6 +11,7 @@ export interface IAlbum {
   artist: string;
   date: number;
   image: string | null;
+  amount: string;
 }
 
 export interface IAlbumFull {

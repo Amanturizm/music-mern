@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, CardMedia, Grid, styled, Typography } from '@mui/material';
-import { IAlbum, IArtist } from '../../types';
 import { apiUrl } from '../../constants';
+import { IAlbum, IArtist } from '../../types';
+import { MusicNote } from '@mui/icons-material';
 
 const CssGrid = styled(Grid)({
   display: 'flex',
@@ -17,41 +18,64 @@ const CssGrid = styled(Grid)({
 });
 
 interface Props {
-  item: IArtist | IAlbum;
-  isArtist?: boolean;
+  artist?: IArtist;
+  album?: IAlbum;
   onClick?: React.MouseEventHandler;
 }
 
-const MusicCard: React.FC<Props> = ({ item, isArtist, onClick }) => {
+const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
+  const item = artist || album;
+
   return (
     <CssGrid item
              onClick={onClick}
-             width={isArtist ? 180 : 200}
-             height={isArtist ? 210 : 240}
-             padding={isArtist ? 1 : 2}
+             width={artist ? 180 : 200}
+             height={artist ? 210 : 240}
+             padding={artist ? 1 : 2}
+             paddingBottom={1}
     >
       <Box component="div"
            width={160}
            height={160}
-           margin="0 auto"
-           borderRadius={isArtist ? '50%' : 2}
+           margin="0 auto 10px auto"
+           borderRadius={artist ? '50%' : 2}
            boxShadow="0 8px 24px rgba(0,0,0,.5)"
       >
         <CardMedia
-          sx={{ height: '100%', width: '100%', borderRadius: isArtist ? '50%' : 2, }}
-          image={apiUrl + item.image}
+          sx={{ height: '100%', width: '100%', borderRadius: artist ? '50%' : 2, }}
+          image={apiUrl + item?.image}
         />
       </Box>
 
       <Typography
         variant="h6"
-        textAlign="center"
+        fontWeight={600}
+        textAlign={artist && 'center'}
         whiteSpace="nowrap"
         overflow="hidden"
         textOverflow="ellipsis"
       >
-        {item.name}
+        {item?.name}
       </Typography>
+      {
+        album ?
+          <Box component="div"
+               display="flex"
+               justifyContent="space-between"
+               alignItems="center"
+          >
+            <Typography variant="subtitle1" textAlign="center">
+              {album.date}
+            </Typography>
+
+            <Typography variant="subtitle1"
+                        display="flex"
+                        alignItems="center"
+            >
+              <MusicNote fontSize="small" />{album.amount}
+            </Typography>
+          </Box> : null
+      }
     </CssGrid>
   );
 };
