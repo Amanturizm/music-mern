@@ -9,9 +9,7 @@ const tracksRouter = express.Router();
 tracksRouter.get("/", async (req, res) => {
   try {
     if (req.query.album) {
-      const currentAlbumTracks = await Track
-        .find({ album: req.query.album })
-        .populate("album", "name artist date");
+      const currentAlbumTracks = await Track.find({ album: req.query.album });
 
       return res.send(currentAlbumTracks);
     }

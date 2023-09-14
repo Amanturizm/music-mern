@@ -3,8 +3,10 @@ import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { fetchArtists } from './ArtistsThunk';
 import { Grid } from '@mui/material';
 import MusicCard from '../../components/UI/MusicCard';
+import { useNavigate } from 'react-router-dom';
 
 const Artists = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { artists } = useAppSelector(state => state.artists);
 
@@ -19,7 +21,12 @@ const Artists = () => {
           marginTop={15}
     >
       {
-        artists.map(artist => <MusicCard item={artist} key={artist._id} />)
+        artists.map(artist =>
+          <MusicCard item={artist}
+                     isArtist
+                     onClick={() => navigate('/artist/' + artist._id)}
+                     key={artist._id} />
+        )
       }
     </Grid>
   );

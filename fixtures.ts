@@ -42,7 +42,7 @@ import Track from './models/Track';
     {
       name: 'KnownAim',
       image: 'fixtures/knownaim.jpg',
-      info: 'KnownAim, также ранее известный как Niki-Tiki-Tavi (Никита Дмитриевич Гашников) — рэп-исполнитель, баттл-МС, участник SLOVO: Saint-Petersburg (1 сезон), участник 140 BPM Cup (1 сезон).',
+      info: 'KnownAim, also previously known as Niki-Tiki-Tavi (Nikita Dmitrievich Gashnikov) is a rap artist, battle MC, participant in SLOVO: Saint-Petersburg (season 1), participant in the 140 BPM Cup (season 1).',
     },
   );
 

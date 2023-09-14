@@ -1,13 +1,14 @@
 import React from 'react';
-import { CardMedia, Grid, styled, Typography } from '@mui/material';
+import { Box, CardMedia, Grid, styled, Typography } from '@mui/material';
 import { IAlbum, IArtist } from '../../types';
 import { apiUrl } from '../../constants';
 
 const CssGrid = styled(Grid)({
-  width: 200,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
   borderRadius: 10,
   backgroundColor: '#181818',
-  padding: '10px',
   cursor: 'pointer',
   ':hover': {
     backgroundColor: '#282828',
@@ -17,17 +18,38 @@ const CssGrid = styled(Grid)({
 
 interface Props {
   item: IArtist | IAlbum;
+  isArtist?: boolean;
+  onClick?: React.MouseEventHandler;
 }
 
-const MusicCard: React.FC<Props> = ({ item }) => {
+const MusicCard: React.FC<Props> = ({ item, isArtist, onClick }) => {
   return (
-    <CssGrid item>
-      <CardMedia
-        sx={{ height: 140, width: 140, borderRadius: '50%', margin: '0 auto 10px auto' }}
-        image={apiUrl + item.image}
-      />
+    <CssGrid item
+             onClick={onClick}
+             width={isArtist ? 180 : 200}
+             height={isArtist ? 210 : 240}
+             padding={isArtist ? 1 : 2}
+    >
+      <Box component="div"
+           width={160}
+           height={160}
+           margin="0 auto"
+           borderRadius={isArtist ? '50%' : 2}
+           boxShadow="0 8px 24px rgba(0,0,0,.5)"
+      >
+        <CardMedia
+          sx={{ height: '100%', width: '100%', borderRadius: isArtist ? '50%' : 2, }}
+          image={apiUrl + item.image}
+        />
+      </Box>
 
-      <Typography variant="h5" textAlign="center">
+      <Typography
+        variant="h6"
+        textAlign="center"
+        whiteSpace="nowrap"
+        overflow="hidden"
+        textOverflow="ellipsis"
+      >
         {item.name}
       </Typography>
     </CssGrid>
