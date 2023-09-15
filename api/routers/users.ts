@@ -27,6 +27,10 @@ usersRouter.post('/', async (req, res, next) => {
 
 usersRouter.post('/sessions', async (req, res, next) => {
   try {
+    if (!req.body.username || !req.body.password) {
+      return res.status(400).send({ error: 'username or password field is required' });
+    }
+
     const user = await User.findOne({ username: req.body.username });
 
     if (!user) {
