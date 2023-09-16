@@ -8,6 +8,24 @@ import Track from '../models/Track';
 
 const trackHistoryRouter = express.Router();
 
+trackHistoryRouter.get('/', auth, async (req, res, next) => {
+  try {
+    const user = (req as RequestWithUser).user;
+
+    const track_history = await Track_history
+      .find({ user: user._id })
+      // .sort({ date: -1 });
+
+    return res.send(track_history);
+  } catch (e) {
+    if (e instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(e);
+    }
+
+    return next(e);
+  }
+});
+
 trackHistoryRouter.post('/', auth, async (req, res, next) => {
   try {
     const user = (req as RequestWithUser).user;
