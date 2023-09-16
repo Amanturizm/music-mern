@@ -30,6 +30,13 @@ export interface ITrack {
   duration: string;
 }
 
+export interface ITrackHistory {
+  _id: string;
+  user: string;
+  track: string;
+  datetime: Date;
+}
+
 export interface IUser {
   _id: string;
   username: string;
@@ -37,9 +44,9 @@ export interface IUser {
   token: string;
 }
 
-export interface ITrackHistory {
-  _id: string;
-  user: string;
-  track: string;
-  datetime: Date;
+export type TUserRegister = Omit<IUser, '_id' | 'token'>;
+
+export interface IRegisterResponse {
+  user: IUser;
+  message: string;
 }
