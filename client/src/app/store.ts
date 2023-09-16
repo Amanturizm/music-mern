@@ -6,6 +6,7 @@ import { artistsReducer } from '../features/artists/ArtistsSlice';
 import { albumsReducer } from '../features/albums/AlbumsSlice';
 import { tracksReducer } from '../features/tracks/TracksSlice';
 import { usersReducer } from '../features/users/usersSlice';
+import { trackHistoryReducer } from '../features/track_history/TrackHistorySlice';
 
 const usersPersistConfig = {
   key: 'music:users',
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   artists: artistsReducer,
   albums: albumsReducer,
   tracks: tracksReducer,
+  trackHistory: trackHistoryReducer,
 });
 
 export const store = configureStore({

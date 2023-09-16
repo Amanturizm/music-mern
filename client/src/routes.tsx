@@ -5,6 +5,7 @@ import Signup from './features/users/Signup';
 import Login from './features/users/Login';
 import Albums from './features/albums/Albums';
 import Tracks from './features/tracks/Tracks';
+import TrackHistory from './features/track_history/TrackHistory';
 
 const useRoutes = (isAuthenticated: boolean) => (
   <Routes>
@@ -12,12 +13,15 @@ const useRoutes = (isAuthenticated: boolean) => (
     <Route path="/artist/:id" element={<Albums />} />
     {
       !isAuthenticated ?
-      <>
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<Navigate to="/login" />} />
-      </> :
-        <Route path="/album/:id" element={<Tracks />} />
+        <>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </> :
+        <>
+          <Route path="/album/:id" element={<Tracks />} />
+          <Route path="/track_history" element={<TrackHistory />} />
+        </>
     }
     <Route path="*" element={<Navigate to="/" />} />
   </Routes>
