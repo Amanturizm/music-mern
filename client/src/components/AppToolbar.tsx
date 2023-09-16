@@ -2,7 +2,7 @@ import React from 'react';
 import { AppBar, Box, Button, styled, Toolbar, Typography } from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hook';
-import ToolbarMenu from './ToolbarMenu/ToolbarMenu';
+import ToolbarMenu from './ToolbarMenu';
 import { clearUser } from '../features/users/usersSlice';
 
 const CssButton = styled(Button)({
