@@ -25,15 +25,15 @@ export interface IAlbumFull {
 export interface ITrack {
   _id: string;
   name: string;
-  album: string;
+  album: IAlbumFull;
   number: number;
   duration: string;
 }
 
 export interface ITrackHistory {
   _id: string;
-  user: string;
-  track: string;
+  user: IUser;
+  track: { name: string, artist: string };
   datetime: Date;
 }
 
@@ -49,4 +49,17 @@ export type TUserRegister = Omit<IUser, '_id' | 'token'>;
 export interface IRegisterResponse {
   user: IUser;
   message: string;
+}
+
+export interface IValidationError {
+  errors: {
+    [key: string]: {
+      name: string;
+      message: string;
+    }
+  },
+  error: string;
+  message: string;
+  name: string;
+  _message: string;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import HistoryIcon from '@mui/icons-material/History';
-import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
-import { Logout, PersonAdd, Settings } from '@mui/icons-material';
+import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
+import { Logout } from '@mui/icons-material';
 import { IUser } from '../types';
 
 interface Props {

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Avatar, Box, Button, Container, Grid, Link, styled, TextField, Typography } from '@mui/material';
+import { Alert, Avatar, Box, Button, Container, Grid, Link, styled, TextField, Typography } from '@mui/material';
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { TUserRegister } from '../../types';
-import { useAppDispatch } from '../../app/hook';
+import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { login } from './usersThunk';
 
 const CssContainer = styled(Container)({
@@ -21,6 +21,8 @@ const initialState: TUserRegister = {
 
 const Login = () => {
   const dispatch = useAppDispatch();
+  const { registerError } = useAppSelector(state => state.users);
+
   const navigate = useNavigate();
 
   const [state, setState] = useState<TUserRegister>(initialState);
@@ -34,8 +36,10 @@ const Login = () => {
   const sendData = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await dispatch(login(state));
-    navigate('/');
+    try {
+      await dispatch(login(state)).unwrap();
+      navigate('/');
+    } catch {}
   };
 
   return (
@@ -55,10 +59,17 @@ const Login = () => {
           Login
         </Typography>
 
+        {registerError && (
+          <Alert severity="error" sx={{ mt: 2, width: '100%' }}>
+            { registerError.error }
+          </Alert>
+        )}
+
         <Box component="form" onSubmit={sendData} sx={{mt: 3}}>
           <Grid container spacing={2}>
-            <Grid item xs={12} width={0}>
+            <Grid item xs={12}>
               <TextField
+                sx={{ width: '100%' }}
                 required
                 label="Username"
                 name="username"
@@ -70,6 +81,7 @@ const Login = () => {
 
             <Grid item xs={12}>
               <TextField
+                sx={{ width: '100%' }}
                 required
                 name="password"
                 label="Password"

@@ -3,7 +3,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Avatar, Box, Button, Container, Grid, Link, styled, TextField, Typography } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { TUserRegister } from '../../types';
-import { useAppDispatch } from '../../app/hook';
+import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { register } from './usersThunk';
 
 const CssContainer = styled(Container)({
@@ -21,6 +21,8 @@ const initialState: TUserRegister = {
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
+  const { registerError } = useAppSelector(state => state.users);
+
   const navigate = useNavigate();
 
   const [state, setState] = useState<TUserRegister>(initialState);
@@ -34,8 +36,18 @@ const SignUp = () => {
   const sendData = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await dispatch(register(state));
-    navigate('/');
+    try {
+      await dispatch(register(state)).unwrap();
+      navigate('/');
+    } catch {}
+  };
+
+  const getFieldError = (fieldName: string) => {
+    try {
+      return registerError?.errors[fieldName].message;
+    } catch {
+      return undefined;
+    }
   };
 
   return (
@@ -57,19 +69,23 @@ const SignUp = () => {
 
         <Box component="form" onSubmit={sendData} sx={{mt: 3}}>
           <Grid container spacing={2}>
-            <Grid item xs={12} width={0}>
+            <Grid item xs={12}>
               <TextField
+                sx={{ width: '100%' }}
                 required
                 label="Username"
                 name="username"
                 value={state.username}
                 onChange={changeValue}
                 autoComplete="new-username"
+                error={Boolean(getFieldError('username'))}
+                helperText={getFieldError('username')}
               />
             </Grid>
 
             <Grid item xs={12}>
               <TextField
+                sx={{ width: '100%' }}
                 required
                 name="password"
                 label="Password"
@@ -77,6 +93,8 @@ const SignUp = () => {
                 value={state.password}
                 onChange={changeValue}
                 autoComplete="new-password"
+                error={Boolean(getFieldError('password'))}
+                helperText={getFieldError('password')}
               />
             </Grid>
           </Grid>

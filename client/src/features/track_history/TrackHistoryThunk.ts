@@ -3,7 +3,7 @@ import axiosApi from '../../axiosApi';
 import { ITrackHistory } from '../../types';
 import { RootState } from '../../app/store';
 
-export const fetchTrackHistory = createAsyncThunk<ITrackHistory[], null, { state: RootState }>(
+export const fetchTrackHistory = createAsyncThunk<ITrackHistory[], undefined, { state: RootState }>(
   'track_history/fetchAll',
   async (_, thunkAPI) => {
     const token = thunkAPI.getState().users.user?.token;

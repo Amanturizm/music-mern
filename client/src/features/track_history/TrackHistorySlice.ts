@@ -3,12 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchTrackHistory } from './TrackHistoryThunk';
 
 interface State {
-  trackHistory: ITrackHistory[];
+  trackHistory: ITrackHistory[] | null;
   trackHistoryLoading: boolean;
 }
 
 const initialState: State = {
-  trackHistory: [],
+  trackHistory: null,
   trackHistoryLoading: false,
 };
 
@@ -22,7 +22,7 @@ const trackHistorySlice = createSlice({
     });
     builder.addCase(fetchTrackHistory.fulfilled, (state: State, { payload }) => {
       state.trackHistoryLoading = false;
-      state.trackHistory = payload;
+      state.trackHistory = payload.length ? payload : null;
     });
     builder.addCase(fetchTrackHistory.rejected, (state: State) => {
       state.trackHistoryLoading = false;

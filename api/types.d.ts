@@ -8,7 +8,7 @@ export interface IArtist {
 
 export interface IAlbum {
   name: string;
-  artist: string;
+  artist: IArtist;
   date: Date;
   image: string | null;
   amount?: number;
@@ -31,8 +31,24 @@ export interface IUser {
   token: string;
 }
 
+export interface ITrackMutation {
+  _id?: ObjectId;
+  name: string;
+  album: IAlbumMutation;
+  number?: number;
+  duration?: string;
+}
+
 export interface ITrackHistory {
+  _id: ObjectId;
   user: string;
-  track: string;
+  track: ITrackMutation;
+  datetime: Date;
+}
+
+export interface ITrackHistoryMutation {
+  _id: ObjectId;
+  user: string;
+  track: { name: string, artist: string };
   datetime: Date;
 }
