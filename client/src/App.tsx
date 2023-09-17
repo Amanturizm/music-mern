@@ -1,22 +1,16 @@
 import React from 'react';
-import AppToolbar from './components/AppToolbar';
 import useRoutes from './routes';
 import { useAppSelector } from './app/hook';
+import Layout from './components/Layout';
 
 const App = () => {
   const { user } = useAppSelector(state => state.users);
   const routes = useRoutes(!!user);
 
   return (
-    <>
-      <header>
-        <AppToolbar/>
-      </header>
-
-      <main style={{marginTop: 65}}>
-        {routes}
-      </main>
-    </>
+    <Layout>
+      {routes}
+    </Layout>
   );
 };
 

@@ -25,9 +25,14 @@ export interface IAlbumFull {
 export interface ITrack {
   _id: string;
   name: string;
-  album: IAlbumFull;
+  album: string;
   number: number;
+  youtube: string;
   duration: string;
+}
+
+export interface ITrackMutation extends ITrack {
+  album: IAlbumFull;
 }
 
 export interface ITrackHistory {

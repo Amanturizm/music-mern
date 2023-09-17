@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hook';
 import ToolbarMenu from './ToolbarMenu';
 import { clearUser } from '../features/users/usersSlice';
+import { fetchTrackHistory } from '../features/track_history/TrackHistoryThunk';
+import { clearCurrentPlayTrack } from '../features/tracks/TracksSlice';
 
 const CssButton = styled(Button)({
   ':hover': {
@@ -21,17 +23,18 @@ const AppToolbar = () => {
   const { user } = useAppSelector(state => state.users);
   const isAuthenticated = !!user;
 
-  const onTrackHistory = () => {
+  const onTrackHistory = async () => {
     try {
-
+      await dispatch(fetchTrackHistory());
       navigate('/track_history');
     } catch {}
   };
 
   const onLogout = async () => {
     try {
-      await dispatch(clearUser());
-      await localStorage.removeItem('persist:music:users');
+      dispatch(clearUser());
+      dispatch(clearCurrentPlayTrack());
+      localStorage.removeItem('persist:music:users');
       navigate('/');
     } catch {}
   };

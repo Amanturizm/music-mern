@@ -1,16 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ITrack } from '../../types';
 import { fetchTracks } from './TracksThunk';
 
 interface State {
   tracks: ITrack[];
-  currentPlayTrack: string;
+  currentPlayTrack: ITrack | null;
+  visibleVideo: boolean;
   tracksLoading: boolean;
 }
 
 const initialState: State = {
   tracks: [],
-  currentPlayTrack: '',
+  currentPlayTrack: null,
+  visibleVideo: true,
   tracksLoading: false,
 };
 
@@ -18,8 +20,14 @@ const tracksSlice = createSlice({
   name: 'tracks',
   initialState,
   reducers: {
-    changeCurrentPlayTrack: (state: State, { payload }) => {
-      state.currentPlayTrack = state.currentPlayTrack === payload ? '' : payload;
+    changeCurrentPlayTrack: (state: State, { payload }: PayloadAction<ITrack>) => {
+      state.currentPlayTrack = state.currentPlayTrack?._id === payload._id ? null : payload;
+    },
+    clearCurrentPlayTrack: (state: State) => {
+      state.currentPlayTrack = null;
+    },
+    toggleVisibleVideo: (state: State) => {
+      state.visibleVideo = !state.visibleVideo;
     },
   },
   extraReducers: builder => {
@@ -37,4 +45,4 @@ const tracksSlice = createSlice({
 });
 
 export const tracksReducer = tracksSlice.reducer;
-export const { changeCurrentPlayTrack } = tracksSlice.actions;
+export const { changeCurrentPlayTrack, clearCurrentPlayTrack, toggleVisibleVideo } = tracksSlice.actions;

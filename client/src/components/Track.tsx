@@ -26,7 +26,7 @@ interface Props {
 const Track: React.FC<Props> = ({ track }) => {
   const dispatch = useAppDispatch();
   const { currentPlayTrack } = useAppSelector(state => state.tracks);
-  const isPLay: boolean = currentPlayTrack === track._id;
+  const isPLay: boolean = currentPlayTrack?._id === track._id;
 
   const [isHover, setIsHover] = useState<boolean>(false);
   const [isHoverOnPlay, setIsHoverOnPlay] = useState<boolean>(false);
@@ -36,7 +36,7 @@ const Track: React.FC<Props> = ({ track }) => {
       if (!isPLay) {
         await dispatch(postTrackHistory(track._id));
       }
-      await dispatch(changeCurrentPlayTrack(track._id));
+      dispatch(changeCurrentPlayTrack(track));
     } catch {}
   };
 

@@ -27,6 +27,7 @@ export interface ITrack {
   album: string;
   number: number;
   duration: string;
+  youtube: string;
 }
 
 export interface IUser {
@@ -39,6 +40,7 @@ export interface ITrackMutation {
   _id: ObjectId;
   name: string;
   album: IAlbumMutation;
+  youtube: string;
   number?: number;
   duration?: string;
 }
