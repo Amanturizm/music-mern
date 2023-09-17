@@ -60,13 +60,16 @@ const Tracks = () => {
 
               {
                 currentArtist ?
-                  <Typography variant="h5"
-                              marginLeft={.2}
-                              onClick={() => navigate('/artist/' + currentArtist._id)}
-                              style={{ cursor: 'pointer' }}
-                  >
-                    {currentArtist.name}
-                  </Typography> : <CircularProgress />
+                  <Box component="div" display="flex">
+                    <Typography variant="h5"
+                                marginLeft={.2}
+                                onClick={() => navigate('/artist/' + currentArtist._id)}
+                                sx={{ cursor: 'pointer', ':hover': { textDecoration: 'underline' } }}
+                    >
+                      {currentArtist.name}
+                    </Typography>
+                    <div></div>
+                  </Box> : <CircularProgress />
               }
             </Box>
           </Box> : <CircularProgress size={100} />

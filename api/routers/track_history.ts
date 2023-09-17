@@ -25,7 +25,20 @@ trackHistoryRouter.get('/', auth, async (req, res, next) => {
         .findOne({ _id: track.album })
         .populate('artist', 'name') as IAlbumMutation;
 
-      newTrackHistory.push({ _id, user, datetime, track: { name: track.name, artist: album.artist.name } });
+      newTrackHistory.push({
+        _id, user, datetime,
+        track: {
+          name: track.name,
+          album: {
+            _id: album._id,
+            image: album.image,
+            artist: {
+              _id: album.artist._id,
+              name: album.artist.name,
+            },
+          },
+        },
+      });
     }));
 
     return res.send(newTrackHistory);

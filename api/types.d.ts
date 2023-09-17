@@ -2,15 +2,19 @@ import { ObjectId } from 'mongoose';
 
 export interface IArtist {
   name: string;
-  image: string | null;
-  info: string | null;
+  image?: string | null;
+  info?: string | null;
+}
+
+export interface IArtistMutation extends IArtist {
+  _id: ObjectId;
 }
 
 export interface IAlbum {
-  name: string;
-  artist: IArtist;
-  date: Date;
-  image: string | null;
+  name?: string;
+  artist: IArtistMutation;
+  date?: Date;
+  image?: string | null;
   amount?: number;
 }
 
@@ -32,7 +36,7 @@ export interface IUser {
 }
 
 export interface ITrackMutation {
-  _id?: ObjectId;
+  _id: ObjectId;
   name: string;
   album: IAlbumMutation;
   number?: number;
@@ -49,6 +53,6 @@ export interface ITrackHistory {
 export interface ITrackHistoryMutation {
   _id: ObjectId;
   user: string;
-  track: { name: string, artist: string };
+  track: { name: string, album: IAlbumMutation };
   datetime: Date;
 }

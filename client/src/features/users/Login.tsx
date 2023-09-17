@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Alert, Avatar, Box, Button, Container, Grid, Link, styled, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Link,
+  styled,
+  TextField,
+  Typography
+} from '@mui/material';
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { TUserRegister } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
@@ -21,7 +33,7 @@ const initialState: TUserRegister = {
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  const { registerError } = useAppSelector(state => state.users);
+  const { registerLoading, registerError } = useAppSelector(state => state.users);
 
   const navigate = useNavigate();
 
@@ -97,9 +109,17 @@ const Login = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{mt: 3, mb: 2}}
+            sx={{
+              mt: 3,
+              mb: 2,
+              ':disabled': {
+                pointerEvents: 'auto',
+                cursor: 'not-allowed',
+              }
+          }}
+            disabled={registerLoading}
           >
-            Sign In
+            {registerLoading ? <CircularProgress size={25} /> : ('Sign In')}
           </Button>
 
           <Grid container justifyContent="flex-end">

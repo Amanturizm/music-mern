@@ -33,7 +33,7 @@ const Track: React.FC<Props> = ({ track }) => {
 
   const clickPlay = async () => {
     try {
-      if (!currentPlayTrack) {
+      if (!isPLay) {
         await dispatch(postTrackHistory(track._id));
       }
       await dispatch(changeCurrentPlayTrack(track._id));

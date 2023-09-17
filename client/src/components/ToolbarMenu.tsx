@@ -51,6 +51,14 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
             overflow: 'visible',
             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
             mt: 1.5,
+            color: '#fff',
+            bgcolor: '#222',
+            '& .MuiMenuItem-root': {
+              ':hover': {
+                bgcolor: 'rgba(227,227,227,.08)',
+                transition: 'all .1s linear',
+              },
+            },
             '& .MuiAvatar-root': {
               width: 32,
               height: 32,
@@ -65,7 +73,7 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: 'background.paper',
+              bgcolor: '#222',
               transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0,
             },
@@ -79,16 +87,16 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
         >
           <Avatar /> {user.username}
         </MenuItem>
-        <Divider />
+        <Divider color="#ccc" />
         <MenuItem onClick={onTrackHistory}>
           <ListItemIcon>
-            <HistoryIcon />
+            <HistoryIcon sx={{ color: '#fff' }} />
           </ListItemIcon>
           Track History
         </MenuItem>
         <MenuItem onClick={onLogout}>
           <ListItemIcon>
-            <Logout fontSize="small" sx={{ marginLeft: .5 }} />
+            <Logout fontSize="small" sx={{ color: '#fff', marginLeft: .5 }} />
           </ListItemIcon>
           Logout
         </MenuItem>

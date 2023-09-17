@@ -33,7 +33,7 @@ export interface ITrack {
 export interface ITrackHistory {
   _id: string;
   user: IUser;
-  track: { name: string, artist: string };
+  track: { name: string, album: IAlbumFull, };
   datetime: Date;
 }
 

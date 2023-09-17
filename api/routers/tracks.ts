@@ -3,10 +3,11 @@ import Track from '../models/Track';
 import { IAlbum, IAlbumMutation, ITrack } from '../types';
 import Album from '../models/Album';
 import album from '../models/Album';
+import auth, { RequestWithUser } from '../middleware/auth';
 
 const tracksRouter = express.Router();
 
-tracksRouter.get("/", async (req, res) => {
+tracksRouter.get("/", auth, async (req, res) => {
   try {
     if (req.query.album) {
       const currentAlbumTracks = await Track

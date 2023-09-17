@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
-import { Box } from '@mui/material';
+import { Box, LinearProgress } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { fetchTrackHistory } from './TrackHistoryThunk';
-import TrackHistoryItem from '../../components/TrackHistoryItem/TrackHistoryItem';
+import TrackHistoryItem from '../../components/TrackHistoryItem';
+import Empty from '../../components/UI/Empty';
 
 const TrackHistory = () => {
   const dispatch = useAppDispatch();
 
-  const { trackHistory } = useAppSelector(state => state.trackHistory);
+  const { trackHistory, trackHistoryLoading } = useAppSelector(state => state.trackHistory);
 
   useEffect(() => {
     if (!trackHistory) {
@@ -18,7 +19,11 @@ const TrackHistory = () => {
 
   return (
     <Box component="div">
-      {trackHistory?.map(item => <TrackHistoryItem item={item} key={item._id} />)}
+      {
+        trackHistoryLoading ? <LinearProgress color="inherit" />
+          : trackHistory ? trackHistory.map(item => <TrackHistoryItem item={item} key={item._id} />)
+            : <Empty>Track History is empty</Empty>
+      }
     </Box>
   );
 };
