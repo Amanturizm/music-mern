@@ -15,8 +15,8 @@ const Artists = () => {
   }, [dispatch]);
 
   return artistsLoading ? <LinearProgress color="inherit" /> : (
-    <Box component="div" marginY={13}>
-      <Grid container justifyContent="center" gap={5}>
+    <Box component="div" marginY={10}>
+      <Grid container gap={5} padding={2.2}>
         {
           artists.map(artist =>
             <MusicCard artist={artist}

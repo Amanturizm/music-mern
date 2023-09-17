@@ -18,7 +18,7 @@ import Track from './models/Track';
     console.log('Collections were not present, skipping drop...');
   }
 
-  const [Oxxxymiron, R1Fmabes, MC_No_Limit, Diktator_UAV, KnownAim] = await Artist.create(
+  const [Oxxxymiron, R1Fmabes, MC_No_Limit, Diktator_UAV, KnownAim, Booker, JesusAVGN] = await Artist.create(
     {
       name: 'Oxxxymiron',
       image: 'fixtures/oxxxymiron.jpg',
@@ -44,44 +44,66 @@ import Track from './models/Track';
       image: 'fixtures/knownaim.jpg',
       info: 'KnownAim, also previously known as Niki-Tiki-Tavi (Nikita Dmitrievich Gashnikov) is a rap artist, battle MC, participant in SLOVO: Saint-Petersburg (season 1), participant in the 140 BPM Cup (season 1).',
     },
+    {
+      name: 'Booker',
+      image: null,
+      info: 'Booker, previously also known as Booker D. Fred (Fedor Dmitrievich Ignatiev) - rap artist, battle MC, finalist of Versus: Fresh Blood (season 2), semi-finalist of SLOVO: Saint-Petersburg (season 2), champion of #STRELASPB (1 season), former host of the rap project VSRAP RAPYOU battle. Former member of the creative association Antihype, founder of the NKVD team.'
+    },
+    {
+      name: 'JesusAVGN',
+      image: 'fixtures/hesus.jpeg',
+      info: 'JesusAVGN is a Russian streamer, blogger and let\'s player, who gained fame thanks to YouTube and Twitch. Alexey created his YouTube channel called JesusAVGN on May 3, 2012. And on August 16, I opened an account on Twitch. At first he hid his face, but on December 31, 2015, he finally announced (showed his face).'
+    },
   );
 
-  const [miXXXtape_I, Eternal_Jew, Badman, Balance, Dogolya, KBCKMC] = await Album.create(
+  const [miXXXtape_I, Eternal_Jew, Badman, Balance, Dogolya, KBCKMC, THE_BOX, Other] = await Album.create(
     {
       name: 'miXXXtape I',
-      artist: Oxxxymiron.id,
+      artist: Oxxxymiron._id,
       date: 2012,
       image: 'fixtures/mixxxtape1.jpg',
     },
     {
       name: 'Eternal Jew',
-      artist: Oxxxymiron.id,
+      artist: Oxxxymiron._id,
       date: 2011,
       image: 'fixtures/eternal_jew.png',
     },
     {
       name: 'Badman',
-      artist: MC_No_Limit.id,
+      artist: MC_No_Limit._id,
       date: 2017,
       image: 'fixtures/badman.jpg',
     },
     {
       name: 'Баланс',
-      artist: Diktator_UAV.id,
+      artist: Diktator_UAV._id,
       date: 2021,
       image: 'fixtures/balance.jpg',
     },
     {
       name: 'Доголя',
-      artist: KnownAim.id,
+      artist: KnownAim._id,
       date: 2018,
       image: 'fixtures/dogolya.jpeg',
     },
     {
       name: 'КУБОК МЦ:11(Autotune Battle)',
-      artist: KnownAim.id,
+      artist: KnownAim._id,
       date: 2022,
       image: 'fixtures/kbckmcexpainvsknownaim.jpeg',
+    },
+    {
+      name: 'THE BOX',
+      artist: Booker._id,
+      date: 2018,
+      image: 'fixtures/the_box.jpeg',
+    },
+    {
+      name: 'Other',
+      artist: JesusAVGN._id,
+      date: 2021,
+      image: null,
     },
   );
 
@@ -205,7 +227,49 @@ import Track from './models/Track';
       album: KBCKMC.id,
       duration: '2:14',
       number: 6,
-    }
+    },
+    {
+      name: 'ВЕСЕЛИТЬСЯ',
+      album: THE_BOX.id,
+      duration: '2:16',
+      number: 1,
+    },
+    {
+      name: 'BOX-SHAPED INTRO',
+      album: THE_BOX.id,
+      duration: '2:00',
+      number: 2,
+    },
+    {
+      name: 'Я НЕ ТЫ',
+      album: THE_BOX.id,
+      duration: '2:11',
+      number: 3,
+    },
+    {
+      name: 'HALF-LIFE',
+      album: THE_BOX.id,
+      duration: '2:32',
+      number: 4,
+    },
+    {
+      name: 'ДВЕ',
+      album: THE_BOX.id,
+      duration: '2:19',
+      number: 5,
+    },
+    {
+      name: 'А всша?',
+      album: Other.id,
+      duration: '1:28',
+      number: 4,
+    },
+    {
+      name: 'Тульский пряник',
+      album: Other.id,
+      duration: '1:11',
+      number: 7,
+    },
   );
 
   await db.close();await db.close();

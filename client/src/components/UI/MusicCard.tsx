@@ -3,6 +3,8 @@ import { Box, CardMedia, Grid, styled, Typography } from '@mui/material';
 import { apiUrl } from '../../constants';
 import { IAlbum, IArtist } from '../../types';
 import { MusicNote } from '@mui/icons-material';
+import no_album_image from '../../assets/no-album.png';
+import NoArtistSvg from './NoArtistSvg';
 
 const CssGrid = styled(Grid)({
   display: 'flex',
@@ -26,6 +28,23 @@ interface Props {
 const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
   const item = artist || album;
 
+  const imageUrl: string = (item && item.image) ? apiUrl + item.image : no_album_image;
+
+  let image: React.ReactNode =
+    <CardMedia
+      sx={{
+        height: '100%',
+        width: '100%',
+        borderRadius: artist ? '50%' : 2,
+        bgcolor: '#333'
+      }}
+      image={imageUrl}
+    />;
+
+  if ((!item || !item.image) && artist) {
+    image = <NoArtistSvg />;
+  }
+
   return (
     <CssGrid item
              onClick={onClick}
@@ -41,10 +60,7 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
            borderRadius={artist ? '50%' : 2}
            boxShadow="0 8px 24px rgba(0,0,0,.5)"
       >
-        <CardMedia
-          sx={{ height: '100%', width: '100%', borderRadius: artist ? '50%' : 2, }}
-          image={apiUrl + item?.image}
-        />
+        {image}
       </Box>
 
       <Typography

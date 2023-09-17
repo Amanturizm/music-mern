@@ -18,28 +18,27 @@ trackHistoryRouter.get('/', auth, async (req, res, next) => {
       .sort({ datetime: -1 })
       .populate('track', 'name album') as ITrackHistory[];
 
-    const newTrackHistory: ITrackHistoryMutation[] = [];
+    const newTrackHistory: Awaited<ITrackHistoryMutation>[] =
+      await Promise.all(track_history.map(async ({ _id, user, track, datetime }) => {
+        const album = await Album
+          .findOne({ _id: track.album })
+          .populate('artist', 'name') as IAlbumMutation;
 
-    void await Promise.all(track_history.map(async ({ _id, user, track, datetime }) => {
-      const album = await Album
-        .findOne({ _id: track.album })
-        .populate('artist', 'name') as IAlbumMutation;
-
-      newTrackHistory.push({
-        _id, user, datetime,
-        track: {
-          name: track.name,
-          album: {
-            _id: album._id,
-            image: album.image,
-            artist: {
-              _id: album.artist._id,
-              name: album.artist.name,
+        return {
+          _id, user, datetime,
+          track: {
+            name: track.name,
+            album: {
+              _id: album._id,
+              image: album.image,
+              artist: {
+                _id: album.artist._id,
+                name: album.artist.name,
+              },
             },
           },
-        },
-      });
-    }));
+        };
+      }));
 
     return res.send(newTrackHistory);
   } catch (e) {

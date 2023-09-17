@@ -8,6 +8,8 @@ import MusicCard from '../../components/UI/MusicCard';
 import { fetchArtists } from '../artists/ArtistsThunk';
 import { apiUrl } from '../../constants';
 import { IArtist } from '../../types';
+import no_album_image from '../../assets/no-album.png';
+import NoArtistSvg from '../../components/UI/NoArtistSvg';
 
 const Albums = () => {
   const navigate = useNavigate();
@@ -32,6 +34,19 @@ const Albums = () => {
     }
   }, [artists, id]);
 
+  const imageUrl: string = (currentArtist && currentArtist.image) ?
+    apiUrl + currentArtist.image : no_album_image;
+
+  let image: React.ReactNode =
+    <CardMedia
+      sx={{ height: 225, width: 225, borderRadius: '50%' }}
+      image={imageUrl}
+    />;
+
+  if (!currentArtist || !currentArtist.image) {
+    image = <NoArtistSvg height={225} width={225} />;
+  }
+
   return (
     <>
       {albumsLoading && <LinearProgress color="inherit" />}
@@ -42,10 +57,7 @@ const Albums = () => {
                alignItems="center"
                gap={5}
           >
-            <CardMedia
-              sx={{ height: 225, width: 225, borderRadius: '50%' }}
-              image={apiUrl + currentArtist.image}
-            />
+            {image}
             <Typography variant="h2"
                         display="flex"
                         alignItems="center"

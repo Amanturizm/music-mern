@@ -8,6 +8,7 @@ import { IArtist } from '../../types';
 import Track from '../../components/Track';
 import { fetchAlbum } from '../albums/AlbumsThunk';
 import { fetchArtists } from '../artists/ArtistsThunk';
+import no_album_image from '../../assets/no-album.png';
 
 const Tracks = () => {
   const navigate = useNavigate();
@@ -39,6 +40,9 @@ const Tracks = () => {
     }
   }, [artists, currentAlbum]);
 
+  const imageUrl: string = (currentAlbum && currentAlbum.image) ?
+    apiUrl + currentAlbum.image : no_album_image;
+
   return (
     <>
       {tracksLoading && <LinearProgress color="inherit" />}
@@ -50,8 +54,8 @@ const Tracks = () => {
                gap={5}
           >
             <CardMedia
-              sx={{ height: 200, width: 200, borderRadius: 2 }}
-              image={apiUrl + currentAlbum.image}
+              sx={{ height: 225, width: 225, borderRadius: 2 }}
+              image={imageUrl}
             />
             <Box>
               <Typography variant="h3" fontWeight="bold">

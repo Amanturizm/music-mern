@@ -4,6 +4,7 @@ import { ITrackHistory } from '../types';
 import { Box, CardMedia, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { apiUrl } from '../constants';
+import no_album_image from '../assets/no-album.png';
 
 interface Props {
   item: ITrackHistory;
@@ -27,7 +28,7 @@ const TrackHistoryItem: React.FC<Props> = ({ item }) => {
       >
         <CardMedia
           sx={{ height: 50, width: 50, borderRadius: 2 }}
-          image={apiUrl + item.track.album.image}
+          image={item.track.album.image ? apiUrl + item.track.album.image : no_album_image}
         />
         <Box component="div">
           <Box component="div" display="flex">
