@@ -1,7 +1,9 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import bcrypt from 'bcrypt';
-import User from '../models/User';
+import User, { IUserMethods } from '../models/User';
+import auth, { RequestWithUser } from '../middleware/auth';
+import { IUser } from '../types';
 
 const usersRouter = express.Router();
 
@@ -47,6 +49,20 @@ usersRouter.post('/sessions', async (req, res, next) => {
     await user.save();
 
     return res.send({ message: 'Username and password correct!', user });
+  } catch (e) {
+    return next(e);
+  }
+});
+
+usersRouter.delete('/sessions', auth, async (req, res, next) => {
+  try {
+    const { _id } = (req as RequestWithUser).user;
+
+    const user = await User.findById(_id) as HydratedDocument<IUserMethods>;
+
+    user.generateToken();
+    await user.save();
+    return res.send({ message: 'User token changed!' });
   } catch (e) {
     return next(e);
   }

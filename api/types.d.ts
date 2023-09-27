@@ -1,13 +1,15 @@
-import { ObjectId } from 'mongoose';
+import mongoose, { ObjectId, Types } from 'mongoose';
 
 export interface IArtist {
   name: string;
   image?: string | null;
   info?: string | null;
+  isPublished?: boolean;
+  user: Types.ObjectId;
 }
 
 export interface IArtistMutation extends IArtist {
-  _id: ObjectId;
+  _id: Types.ObjectId;
 }
 
 export interface IAlbum {
@@ -16,10 +18,12 @@ export interface IAlbum {
   date?: Date;
   image?: string | null;
   amount?: number;
+  isPublished?: boolean;
+  user: Types.ObjectId;
 }
 
 export interface IAlbumMutation extends IAlbum {
-  _id: ObjectId;
+  _id: Types.ObjectId;
 }
 
 export interface ITrack {
@@ -28,6 +32,8 @@ export interface ITrack {
   number: number;
   duration: string;
   youtube: string;
+  isPublished?: boolean;
+  user: Types.ObjectId;
 }
 
 export interface IUser {
@@ -38,24 +44,26 @@ export interface IUser {
 }
 
 export interface ITrackMutation {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   name: string;
   album: IAlbumMutation;
   youtube: string;
   number?: number;
   duration?: string;
+  isPublished?: boolean;
+  user?: Types.ObjectId;
 }
 
 export interface ITrackHistory {
-  _id: ObjectId;
-  user: string;
+  _id: Types.ObjectId;
+  user: Types.ObjectId;
   track: ITrackMutation;
   datetime: Date;
 }
 
 export interface ITrackHistoryMutation {
-  _id: ObjectId;
-  user: string;
+  _id: Types.ObjectId;
+  user: Types.ObjectId;
   track: { name: string, album: IAlbumMutation };
   datetime: Date;
 }

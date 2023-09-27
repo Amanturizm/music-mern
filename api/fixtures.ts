@@ -3,6 +3,7 @@ import config from './config';
 import Artist from './models/Artist';
 import Album from './models/Album';
 import Track from './models/Track';
+import User from './models/User';
 
 (async () => {
   await mongoose.connect(config.db);
@@ -18,41 +19,67 @@ import Track from './models/Track';
     console.log('Collections were not present, skipping drop...');
   }
 
+  const [user_1, user_2, admin_1] = await User.create(
+    {
+      username: 'Okabe Rintarou',
+      password: 'el.psy.congroo',
+      token: crypto.randomUUID(),
+    },
+    {
+      username: 'Kurisu Makise',
+      password: 'iwantmyownspoon',
+      token: crypto.randomUUID(),
+    },
+    {
+      username: 'admin',
+      password: 'admin',
+      token: crypto.randomUUID(),
+      role: 'admin',
+    },
+  );
+
   const [Oxxxymiron, R1Fmabes, MC_No_Limit, Diktator_UAV, KnownAim, Booker, JesusAVGN] = await Artist.create(
     {
       name: 'Oxxxymiron',
       image: 'fixtures/oxxxymiron.jpg',
       info: 'Russian rap artist, songwriter and public figure.',
+      user: user_1._id,
     },
     {
       name: 'R1Fmabes',
       image: 'fixtures/r1fmabes.png',
       info: 'Battle rapper from Kaluga, champion Break on Bits (season 1), participant of SLOVO: Moscow, organizer and participant of the Kaluga battle site More Than Battle (BCHB).',
+      user: user_1._id,
     },
     {
       name: 'MC No Limit',
       image: 'fixtures/mc_no_limit.png',
       info: 'Grime artist from east London, born in Ukraine. Reads in Russian and English. No Limit is a veteran of the grime movement and in fact the first MC to start performing grime in Russian.',
+      user: user_2._id,
     },
     {
       name: 'Диктатор UAV',
       image: 'fixtures/diktator.jpg',
       info: 'Rap artist, battle MC, semi-finalist of VRuBay Battle (Season 1) and participant of 140 BPM Battle.',
+      user: user_1._id,
     },
     {
       name: 'KnownAim',
       image: 'fixtures/knownaim.jpg',
       info: 'KnownAim, also previously known as Niki-Tiki-Tavi (Nikita Dmitrievich Gashnikov) is a rap artist, battle MC, participant in SLOVO: Saint-Petersburg (season 1), participant in the 140 BPM Cup (season 1).',
+      user: user_2._id,
     },
     {
       name: 'Booker',
       image: null,
-      info: 'Booker, previously also known as Booker D. Fred (Fedor Dmitrievich Ignatiev) - rap artist, battle MC, finalist of Versus: Fresh Blood (season 2), semi-finalist of SLOVO: Saint-Petersburg (season 2), champion of #STRELASPB (1 season), former host of the rap project VSRAP RAPYOU battle. Former member of the creative association Antihype, founder of the NKVD team.'
+      info: 'Booker, previously also known as Booker D. Fred (Fedor Dmitrievich Ignatiev) - rap artist, battle MC, finalist of Versus: Fresh Blood (season 2), semi-finalist of SLOVO: Saint-Petersburg (season 2), champion of #STRELASPB (1 season), former host of the rap project VSRAP RAPYOU battle. Former member of the creative association Antihype, founder of the NKVD team.',
+      user: user_2._id,
     },
     {
       name: 'JesusAVGN',
       image: 'fixtures/hesus.jpeg',
-      info: 'JesusAVGN is a Russian streamer, blogger and let\'s player, who gained fame thanks to YouTube and Twitch. Alexey created his YouTube channel called JesusAVGN on May 3, 2012. And on August 16, I opened an account on Twitch. At first he hid his face, but on December 31, 2015, he finally announced (showed his face).'
+      info: 'JesusAVGN is a Russian streamer, blogger and let\'s player, who gained fame thanks to YouTube and Twitch. Alexey created his YouTube channel called JesusAVGN on May 3, 2012. And on August 16, I opened an account on Twitch. At first he hid his face, but on December 31, 2015, he finally announced (showed his face).',
+      user: user_1._id,
     },
   );
 
@@ -62,48 +89,56 @@ import Track from './models/Track';
       artist: Oxxxymiron._id,
       date: 2012,
       image: 'fixtures/mixxxtape1.jpg',
+      user: user_1._id,
     },
     {
       name: 'Eternal Jew',
       artist: Oxxxymiron._id,
       date: 2011,
       image: 'fixtures/eternal_jew.png',
+      user: user_2._id,
     },
     {
       name: 'Badman',
       artist: MC_No_Limit._id,
       date: 2017,
       image: 'fixtures/badman.jpg',
+      user: user_1._id,
     },
     {
       name: 'Баланс',
       artist: Diktator_UAV._id,
       date: 2021,
       image: 'fixtures/balance.jpg',
+      user: user_1._id,
     },
     {
       name: 'Доголя',
       artist: KnownAim._id,
       date: 2018,
       image: 'fixtures/dogolya.jpeg',
+      user: user_1._id,
     },
     {
       name: 'КУБОК МЦ:11(Autotune Battle)',
       artist: KnownAim._id,
       date: 2022,
       image: 'fixtures/kbckmcexpainvsknownaim.jpeg',
+      user: user_2._id,
     },
     {
       name: 'THE BOX',
       artist: Booker._id,
       date: 2018,
       image: 'fixtures/the_box.jpeg',
+      user: user_2._id,
     },
     {
       name: 'Other',
       artist: JesusAVGN._id,
       date: 2021,
       image: null,
+      user: user_1._id,
     },
   );
 
@@ -114,6 +149,7 @@ import Track from './models/Track';
       duration: '2:56',
       number: 20,
       youtube: 'https://www.youtube.com/embed/xMOgmJ8roRE?si=GTbXDn54IhyuPfYC',
+      user: user_2._id,
     },
     {
       name: 'Лондон против всех',
@@ -121,6 +157,7 @@ import Track from './models/Track';
       duration: '2:54',
       number: 12,
       youtube: 'https://www.youtube.com/embed/hWPiM4dg6ss?si=pDC0xStu2V_FsdPW',
+      user: user_1._id,
     },
     {
       name: 'Чёртово колесо',
@@ -128,6 +165,7 @@ import Track from './models/Track';
       duration: '0:45',
       number: 21,
       youtube: 'https://www.youtube.com/embed/HUyAZANieF0?si=hNC_kUPZOv_HRn7F',
+      user: user_2._id,
     },
     {
       name: 'Operation Payback',
@@ -135,6 +173,7 @@ import Track from './models/Track';
       duration: '4:12',
       number: 5,
       youtube: 'https://www.youtube.com/embed/3K8oJQuW2DU?si=0sizWGdTsKx0cQtC',
+      user: user_2._id,
     },
     {
       name: 'Bukkake',
@@ -142,6 +181,7 @@ import Track from './models/Track';
       duration: '1:25',
       number: 33,
       youtube: 'https://www.youtube.com/embed/dVsJfQLv5l0?si=yEs-TLTqy6VWCYdE',
+      user: user_2._id,
     },
     {
       name: 'Восточный Мордор',
@@ -149,6 +189,7 @@ import Track from './models/Track';
       duration: '2:49',
       number: 1,
       youtube: 'https://www.youtube.com/embed/EN3n8sW42Eo?si=GDZT6aCFqW8kUNkW',
+      user: user_1._id,
     },
     {
       name: 'Судьба моралиста',
@@ -156,6 +197,7 @@ import Track from './models/Track';
       duration: '1:59',
       number: 9,
       youtube: 'https://www.youtube.com/embed/nvmDrD7iuZE?si=hRxMUvdeE4gS6YC7',
+      user: user_1._id,
     },
     {
       name: 'В Говне',
@@ -163,6 +205,7 @@ import Track from './models/Track';
       duration: '2:30',
       number: 12,
       youtube: 'https://www.youtube.com/embed/4cDwuSSmttE?si=tMOXQDuU08mAs6Gb',
+      user: user_1._id,
     },
     {
       name: 'Russky Cockney',
@@ -170,6 +213,7 @@ import Track from './models/Track';
       duration: '2:37',
       number: 11,
       youtube: 'https://www.youtube.com/embed/dM-pggWuC1k?si=4YVjORBCpLrqASJl',
+      user: user_1._id,
     },
     {
       name: 'До сих пор MC',
@@ -177,6 +221,7 @@ import Track from './models/Track';
       duration: '3:24',
       number: 5,
       youtube: 'https://www.youtube.com/embed/7EWnP5QMwg4?si=W9iJTPaf4AOni_hj',
+      user: user_1._id,
     },
     {
       name: 'Badman (feat. Global Elements)',
@@ -184,6 +229,7 @@ import Track from './models/Track';
       duration: '3:05',
       number: 1,
       youtube: 'https://www.youtube.com/embed/__6uSvLJTZE?si=awnUR1UVwK-uB-Fa',
+      user: user_1._id,
     },
     {
       name: 'Железный занавес',
@@ -191,6 +237,7 @@ import Track from './models/Track';
       duration: '3:12',
       number: 1,
       youtube: 'https://www.youtube.com/embed/XqHpmz-sNO8?si=niJV8OqMoJOgWem8',
+      user: user_1._id,
     },
     {
       name: 'Пока вы жевали куплеты',
@@ -198,6 +245,7 @@ import Track from './models/Track';
       duration: '4:07',
       number: 7,
       youtube: 'https://www.youtube.com/embed/A4B1wXLtogM?si=XQCCBtbPvtc-OC1y',
+      user: user_2._id,
     },
     {
       name: 'Растет Тариф',
@@ -205,6 +253,7 @@ import Track from './models/Track';
       duration: '3:27',
       number: 3,
       youtube: 'https://www.youtube.com/embed/tgJpPrzRYfM?si=cTlCeWd13yrX7TsI&amp;start=477',
+      user: user_2._id,
     },
     {
       name: 'SUNSET',
@@ -212,6 +261,7 @@ import Track from './models/Track';
       duration: '4:08',
       number: 2,
       youtube: 'https://www.youtube.com/embed/tgJpPrzRYfM?si=cTlCeWd13yrX7TsI&amp;start=233',
+      user: user_1._id,
     },
     {
       name: 'Жить',
@@ -219,6 +269,7 @@ import Track from './models/Track';
       duration: '2:53',
       number: 8,
       youtube: 'https://www.youtube.com/embed/tgJpPrzRYfM?si=cTlCeWd13yrX7TsI&amp;start=1541',
+      user: user_1._id,
     },
     {
       name: 'Али',
@@ -226,6 +277,7 @@ import Track from './models/Track';
       duration: '3:55',
       number: 1,
       youtube: 'https://www.youtube.com/embed/tgJpPrzRYfM?si=cTlCeWd13yrX7TsI',
+      user: user_1._id,
     },
     {
       name: 'Round 1 (vs. Экспайн)',
@@ -233,6 +285,7 @@ import Track from './models/Track';
       duration: '2:15',
       number: 1,
       youtube: 'https://www.youtube.com/embed/3ZNJPIqUM-8?si=nZrHIOukD-rwTeqQ&amp;start=145',
+      user: user_2._id,
     },
     {
       name: 'Round 2 (vs. Экспайн)',
@@ -240,6 +293,7 @@ import Track from './models/Track';
       duration: '2:25',
       number: 3,
       youtube: 'https://www.youtube.com/embed/3ZNJPIqUM-8?si=nZrHIOukD-rwTeqQ&amp;start=451',
+      user: user_1._id,
     },
     {
       name: 'Round 3 (vs. Экспайн)',
@@ -247,6 +301,7 @@ import Track from './models/Track';
       duration: '2:14',
       number: 6,
       youtube: 'https://www.youtube.com/embed/3ZNJPIqUM-8?si=nZrHIOukD-rwTeqQ&amp;start=763',
+      user: user_2._id,
     },
     {
       name: 'ВЕСЕЛИТЬСЯ',
@@ -254,6 +309,7 @@ import Track from './models/Track';
       duration: '2:16',
       number: 1,
       youtube: 'https://www.youtube.com/embed/IHBsznDGyRQ?si=CQiG7_6KtrfMqA9g',
+      user: user_1._id,
     },
     {
       name: 'BOX-SHAPED INTRO',
@@ -261,6 +317,7 @@ import Track from './models/Track';
       duration: '2:00',
       number: 2,
       youtube: 'https://www.youtube.com/embed/IHBsznDGyRQ?si=nxWKfNVPm2KkErvD&amp;start=136',
+      user: user_1._id,
     },
     {
       name: 'Я НЕ ТЫ',
@@ -268,6 +325,7 @@ import Track from './models/Track';
       duration: '2:11',
       number: 3,
       youtube: 'https://www.youtube.com/embed/IHBsznDGyRQ?si=nxWKfNVPm2KkErvD&amp;start=256',
+      user: user_2._id,
     },
     {
       name: 'HALF-LIFE',
@@ -275,6 +333,7 @@ import Track from './models/Track';
       duration: '2:32',
       number: 4,
       youtube: 'https://www.youtube.com/embed/IHBsznDGyRQ?si=nxWKfNVPm2KkErvD&amp;start=388',
+      user: user_2._id,
     },
     {
       name: 'ДВЕ',
@@ -282,6 +341,7 @@ import Track from './models/Track';
       duration: '2:19',
       number: 5,
       youtube: 'https://www.youtube.com/embed/IHBsznDGyRQ?si=nxWKfNVPm2KkErvD&amp;start=541',
+      user: user_2._id,
     },
     {
       name: 'А всша?',
@@ -289,6 +349,7 @@ import Track from './models/Track';
       duration: '1:28',
       number: 4,
       youtube: 'https://www.youtube.com/embed/e_Wyc9SCCEo?si=pQDHk6W2U3sMtgpK',
+      user: user_1._id,
     },
     {
       name: 'Тульский пряник',
@@ -296,6 +357,7 @@ import Track from './models/Track';
       duration: '1:11',
       number: 7,
       youtube: 'https://www.youtube.com/embed/ktTrhQ6_6Vc?si=jvSDTgU-bPs_7DMT',
+      user: user_1._id,
     },
   );
 

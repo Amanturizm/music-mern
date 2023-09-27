@@ -1,8 +1,12 @@
 import express from "express";
 import { imagesUpload } from '../multer';
 import Album from '../models/Album';
-import { IAlbum, IAlbumMutation, ITrack } from '../types';
+import { IAlbum, IAlbumMutation, IArtist, ITrack } from '../types';
 import Track from '../models/Track';
+import auth, { RequestWithUser } from '../middleware/auth';
+import permit from '../middleware/permit';
+import Artist from '../models/Artist';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 const albumsRouter = express.Router();
 
@@ -38,21 +42,51 @@ albumsRouter.get("/:id", async (req, res) => {
   }
 });
 
-albumsRouter.post("/", imagesUpload.single('image'), async (req, res) => {
-  const albumAssembly: IAlbum = {
-    name: req.body.name,
-    artist: req.body.artist,
-    date: req.body.date,
-    image: req.file ? 'images/' + req.file.filename : null,
-  };
-
-  const album = new Album(albumAssembly);
-
+albumsRouter.post("/", auth, imagesUpload.single('image'), async (req, res) => {
   try {
+    const albumAssembly: IAlbum = {
+      name: req.body.name,
+      artist: req.body.artist,
+      date: req.body.date,
+      image: req.file ? 'images/' + req.file.filename : null,
+      user: req.body.user,
+    };
+
+    const album = new Album(albumAssembly);
+
     await album.save();
     return res.send(album);
   } catch (e) {
     return res.status(400).send(e);
+  }
+});
+
+albumsRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, next) => {
+  try {
+    const user = (req as RequestWithUser).user;
+
+    const album = await Album.findById(req.params.id) as HydratedDocument<IAlbum>;
+
+    if (!album) {
+      return res.status(404).send({ error: 'Album not found!' });
+    }
+
+    if (user.role !== 'admin' && (user._id.toString() !== album.user.toString())) {
+      return res.status(401).send({ error: 'Don\'t have enough rights!' });
+    }
+
+    if (album.isPublished) {
+      return res.status(400).send({ error: 'Album published!' });
+    }
+
+    await album.deleteOne();
+    return res.send({ message: 'Album deleted!' });
+  } catch (e) {
+    if (e instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(e);
+    }
+
+    return next(e);
   }
 });
 

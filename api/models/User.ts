@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto';
 
 const SALT_WORK_FACTORS = 10;
 
-interface IUserMethods {
+export interface IUserMethods extends IUser {
   generateToken(): void;
 }
 

@@ -22,18 +22,21 @@ trackHistoryRouter.get('/', auth, async (req, res, next) => {
       await Promise.all(track_history.map(async ({ _id, user, track, datetime }) => {
         const album = await Album
           .findOne({ _id: track.album })
-          .populate('artist', 'name') as IAlbumMutation;
+          .populate('artist', 'name user') as IAlbumMutation;
 
         return {
           _id, user, datetime,
           track: {
             name: track.name,
+            user: track.user,
             album: {
               _id: album._id,
               image: album.image,
+              user: album.user,
               artist: {
                 _id: album.artist._id,
                 name: album.artist.name,
+                user: album.artist.user,
               },
             },
           },

@@ -1,6 +1,7 @@
 import mongoose, { Types } from 'mongoose';
 import Artist from './Artist';
 import Album from './Album';
+import User from './User';
 
 const Schema = mongoose.Schema;
 
@@ -28,6 +29,19 @@ const TrackSchema = new Schema({
     required: true,
   },
   youtube: String,
+  isPublished: {
+    type: Boolean,
+    default: false,
+  },
+  user: {
+    type: Types.ObjectId,
+    ref: 'User',
+    required: true,
+    validate: {
+      validator: async (value: Types.ObjectId) => User.findById(value),
+      message: 'User does not exist!',
+    },
+  },
 });
 
 const Track = mongoose.model('Track', TrackSchema);
