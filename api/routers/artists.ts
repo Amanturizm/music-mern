@@ -63,4 +63,17 @@ artistsRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, nex
   }
 });
 
+artistsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
+  try {
+    const artist = await Artist.findById(req.params.id) as HydratedDocument<IArtist>;
+
+    artist.isPublished = !artist.isPublished;
+
+    await artist.save();
+    return res.send({ message: 'Field toggled!' });
+  } catch (e) {
+    return next(e);
+  }
+});
+
 export default artistsRouter;

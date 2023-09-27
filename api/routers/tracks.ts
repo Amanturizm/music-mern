@@ -96,4 +96,17 @@ tracksRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, next
   }
 });
 
+tracksRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
+  try {
+    const track = await Track.findById(req.params.id) as HydratedDocument<ITrack>;
+
+    track.isPublished = !track.isPublished;
+
+    await track.save();
+    return res.send({ message: 'Field toggled!' });
+  } catch (e) {
+    return next(e);
+  }
+});
+
 export default tracksRouter;

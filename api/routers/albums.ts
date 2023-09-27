@@ -90,4 +90,17 @@ albumsRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, next
   }
 });
 
+albumsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
+  try {
+    const album = await Album.findById(req.params.id) as HydratedDocument<IAlbum>;
+
+    album.isPublished = !album.isPublished;
+
+    await album.save();
+    return res.send({ message: 'Field toggled!' });
+  } catch (e) {
+    return next(e);
+  }
+});
+
 export default albumsRouter;
