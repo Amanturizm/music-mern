@@ -6,6 +6,9 @@ import Login from './features/users/Login';
 import Albums from './features/albums/Albums';
 import Tracks from './features/tracks/Tracks';
 import TrackHistory from './features/track_history/TrackHistory';
+import ArtistsForm from './components/ArtistsForm';
+import AlbumsForm from './components/AlbumsForm';
+import TracksForm from './components/TracksForm';
 
 const useRoutes = (isAuthenticated: boolean) => (
   <Routes>
@@ -21,6 +24,9 @@ const useRoutes = (isAuthenticated: boolean) => (
         <>
           <Route path="/album/:id" element={<Tracks />} />
           <Route path="/track_history" element={<TrackHistory />} />
+          <Route path="/add-artist" element={<ArtistsForm />} />
+          <Route path="/add-album" element={<AlbumsForm />} />
+          <Route path="/add-track" element={<TracksForm />} />
         </>
     }
     <Route path="*" element={<Navigate to="/" />} />

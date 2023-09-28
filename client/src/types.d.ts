@@ -7,6 +7,12 @@ export interface IArtist {
   user: string;
 }
 
+export interface IArtistForm {
+  name: string;
+  image: File | null;
+  info: string | null;
+}
+
 export interface IAlbum {
   _id: string;
   name: string;
@@ -16,6 +22,13 @@ export interface IAlbum {
   amount: string;
   isPublished: boolean;
   user: string;
+}
+
+export interface IAlbumForm {
+  artist: string;
+  name: string;
+  date: string;
+  image: File | null;
 }
 
 export interface IAlbumFull {
@@ -37,6 +50,14 @@ export interface ITrack {
   duration: string;
   isPublished: boolean;
   user: string;
+}
+
+export interface ITrackForm {
+  name: string;
+  album: string;
+  number: string;
+  youtube: string;
+  duration: string;
 }
 
 export interface ITrackMutation extends ITrack {

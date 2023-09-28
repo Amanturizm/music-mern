@@ -19,10 +19,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { login } from './usersThunk';
 
 const CssContainer = styled(Container)({
-  color: '#000',
   margin: '150px auto',
-  backgroundColor: '#fff',
-  borderRadius: 30,
   padding: '10px',
 });
 

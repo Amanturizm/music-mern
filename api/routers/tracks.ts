@@ -49,13 +49,15 @@ tracksRouter.get("/:id", async (req, res) => {
 
 tracksRouter.post("/", auth, async (req, res) => {
   try {
+    const user = (req as RequestWithUser).user;
+
     const trackAssembly: ITrack = {
       name: req.body.name,
       album: req.body.album,
       number: req.body.number,
       duration: req.body.duration,
       youtube: req.body.youtube,
-      user: req.body.user,
+      user: user._id,
     };
 
     const track = new Track(trackAssembly);

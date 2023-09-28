@@ -6,6 +6,9 @@ import { persistor, store } from './app/store';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
+import { addInterceptors } from './axiosApi';
+
+addInterceptors(store);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

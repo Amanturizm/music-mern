@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
 import HistoryIcon from '@mui/icons-material/History';
 import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
 import { Logout } from '@mui/icons-material';
 import { IUser } from '../types';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   user: IUser;
@@ -11,6 +13,7 @@ interface Props {
 }
 
 const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const open = Boolean(anchorEl);
@@ -88,6 +91,24 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
           <Avatar /> {user.username}
         </MenuItem>
         <Divider color="#ccc" />
+        <MenuItem onClick={() => navigate('/add-artist')}>
+          <ListItemIcon>
+            <AddIcon sx={{ color: '#fff' }} />
+          </ListItemIcon>
+          New artist
+        </MenuItem>
+        <MenuItem onClick={() => navigate('/add-album')}>
+          <ListItemIcon>
+            <AddIcon sx={{ color: '#fff' }} />
+          </ListItemIcon>
+          New album
+        </MenuItem>
+        <MenuItem onClick={() => navigate('/add-track')}>
+          <ListItemIcon>
+            <AddIcon sx={{ color: '#fff' }} />
+          </ListItemIcon>
+          New track
+        </MenuItem>
         <MenuItem onClick={onTrackHistory}>
           <ListItemIcon>
             <HistoryIcon sx={{ color: '#fff' }} />

@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Box } from '@mui/material';
+import { Box, ThemeProvider } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../app/hook';
 import CloseIcon from '@mui/icons-material/Close';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -7,6 +7,7 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import AppToolbar from './AppToolbar';
 import Youtube from './UI/Youtube';
 import { clearCurrentPlayTrack, toggleVisibleVideo } from '../features/tracks/TracksSlice';
+import theme from '../theme';
 
 const iconStyles = {
   width: 35,
@@ -24,7 +25,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   const { currentPlayTrack, visibleVideo } = useAppSelector(state => state.tracks);
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <header>
         <AppToolbar/>
       </header>
@@ -66,7 +67,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         }
         {children}
       </main>
-    </>
+    </ThemeProvider>
   );
 };
 

@@ -44,12 +44,14 @@ albumsRouter.get("/:id", async (req, res) => {
 
 albumsRouter.post("/", auth, imagesUpload.single('image'), async (req, res) => {
   try {
+    const user = (req as RequestWithUser).user;
+
     const albumAssembly: IAlbum = {
       name: req.body.name,
       artist: req.body.artist,
       date: req.body.date,
       image: req.file ? 'images/' + req.file.filename : null,
-      user: req.body.user,
+      user: user._id,
     };
 
     const album = new Album(albumAssembly);

@@ -40,8 +40,8 @@ const AppToolbar = () => {
   };
 
   return (
-    <AppBar position="fixed" sx={{ bgcolor: '#121212' }}>
-      <Toolbar>
+    <AppBar position="fixed">
+      <Toolbar sx={{ bgcolor: '#121212' }}>
         <Typography variant="h5" component="div" sx={{ flexGrow: 1, letterSpacing: 1 }}>
           <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>Attractor School</Link>
         </Typography>
