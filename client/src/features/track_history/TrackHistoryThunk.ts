@@ -16,13 +16,11 @@ export const fetchTrackHistory = createAsyncThunk<ITrackHistory[], undefined, { 
 
     const { data } = await axiosApi('track_history', config);
 
-    if (!data) return [];
-
     return data;
   },
 );
 
-export const postTrackHistory = createAsyncThunk<null, string, { state: RootState }>(
+export const postTrackHistory = createAsyncThunk<void, string, { state: RootState }>(
   'track_history/postOne',
   async (trackId, thunkAPI) => {
     const token = thunkAPI.getState().users.user?.token;
@@ -34,7 +32,5 @@ export const postTrackHistory = createAsyncThunk<null, string, { state: RootStat
     };
 
     await axiosApi.post('track_history', { track: trackId }, config);
-
-    return null;
   },
 );

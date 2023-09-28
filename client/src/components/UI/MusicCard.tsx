@@ -5,6 +5,7 @@ import { IAlbum, IArtist } from '../../types';
 import { MusicNote } from '@mui/icons-material';
 import no_album_image from '../../assets/no-album.png';
 import NoArtistSvg from './NoArtistSvg';
+import { useAppSelector } from '../../app/hook';
 
 const CssGrid = styled(Grid)({
   display: 'flex',
@@ -27,6 +28,7 @@ interface Props {
 
 const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
   const item = artist || album;
+  const { user } = useAppSelector(state => state.users);
 
   const imageUrl: string = (item && item.image) ? apiUrl + item.image : no_album_image;
 
@@ -45,7 +47,9 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
     image = <NoArtistSvg />;
   }
 
-  return (
+  const isVisible = (item && (item.isPublished || (user && (user.role === 'admin' || user._id === item.user))));
+
+  return (item && !isVisible) ? null : (
     <CssGrid item
              onClick={onClick}
              width={artist ? 180 : 200}

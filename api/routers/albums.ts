@@ -18,10 +18,10 @@ albumsRouter.get("/", async (req, res) => {
         .sort({ date: -1 });
 
       const albumsWithAmountTracks = await Promise.all(
-        currentArtistAlbums.map(async ({ _id, name, artist, date, image }) => {
+        currentArtistAlbums.map(async ({ _id, name, artist, date, image, isPublished, user }) => {
           const tracks = await Track.find({ album: _id }) as ITrack[];
 
-          return { _id, name, artist, date, image, amount: tracks.length };
+          return { _id, name, artist, date, image, isPublished, user, amount: tracks.length };
         }));
 
       return res.send(albumsWithAmountTracks);

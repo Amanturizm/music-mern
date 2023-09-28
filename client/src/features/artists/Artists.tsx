@@ -18,11 +18,11 @@ const Artists = () => {
     <Box component="div" marginY={10}>
       <Grid container gap={5} padding={2.2}>
         {
-          artists.map(artist =>
+          artists.map(artist => (
             <MusicCard artist={artist}
                        onClick={() => navigate('/artist/' + artist._id)}
                        key={artist._id} />
-          )
+          ))
         }
       </Grid>
     </Box>

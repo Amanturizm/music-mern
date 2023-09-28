@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, CardMedia, CircularProgress, Grid, LinearProgress, Typography } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { fetchAlbums } from './AlbumsThunk';
 import VerifiedIcon from '@mui/icons-material/Verified';
@@ -18,6 +18,7 @@ const Albums = () => {
   const dispatch = useAppDispatch();
   const { albums, albumsLoading } = useAppSelector(state => state.albums);
   const { artists } = useAppSelector(state => state.artists);
+  const { user } = useAppSelector(state => state.users);
 
   const [currentArtist, setCurrentArtist] = useState<IArtist | null>(null);
 
@@ -47,7 +48,10 @@ const Albums = () => {
     image = <NoArtistSvg height={225} width={225} />;
   }
 
-  return (
+  const isVisible = currentArtist &&
+    (currentArtist.isPublished || (user && (user.role === 'admin' || user._id === currentArtist.user)));
+
+  return (currentArtist && !isVisible) ? <Navigate to="/" /> : (
     <>
       {albumsLoading && <LinearProgress color="inherit" />}
       <Box component="div" margin={13}>

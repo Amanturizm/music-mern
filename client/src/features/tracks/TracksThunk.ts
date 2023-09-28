@@ -16,8 +16,6 @@ export const fetchTracks = createAsyncThunk<ITrack[], string, { state: RootState
 
     const { data } = await axiosApi('tracks?album=' + id, config);
 
-    if (!data) return [];
-
     return data;
   }
 );

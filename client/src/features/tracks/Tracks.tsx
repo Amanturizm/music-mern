@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { fetchTracks } from './TracksThunk';
 import { Box, CardMedia, CircularProgress, Grid, LinearProgress, Typography } from '@mui/material';
 import { apiUrl } from '../../constants';
@@ -18,6 +18,7 @@ const Tracks = () => {
   const { artists } = useAppSelector(state => state.artists);
   const { currentAlbum } = useAppSelector(state => state.albums);
   const { tracks, tracksLoading } = useAppSelector(state => state.tracks);
+  const { user } = useAppSelector(state => state.users);
 
   const [currentArtist, setCurrentArtist] = useState<IArtist | null>(null);
 
@@ -43,7 +44,10 @@ const Tracks = () => {
   const imageUrl: string = (currentAlbum && currentAlbum.image) ?
     apiUrl + currentAlbum.image : no_album_image;
 
-  return (
+  const isVisible = currentAlbum &&
+    (currentAlbum.isPublished || (user && (user.role === 'admin' || user._id === currentAlbum.user)));
+
+  return (currentAlbum && !isVisible) ? <Navigate to="/" /> : (
     <>
       {tracksLoading && <LinearProgress color="inherit" />}
       <Box component="div" margin={13}>

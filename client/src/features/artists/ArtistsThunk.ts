@@ -5,9 +5,7 @@ import { IArtist } from '../../types';
 export const fetchArtists = createAsyncThunk<IArtist[]>(
   'artists/fetchAll',
   async () => {
-    const { data } = await axiosApi<IArtist[] | null>('artists');
-
-    if (!data) return [];
+    const { data } = await axiosApi<IArtist[]>('artists');
 
     return data;
   }
