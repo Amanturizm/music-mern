@@ -40,3 +40,10 @@ export const createAlbum = createAsyncThunk<void, IAlbumForm>(
     await axiosApi.post('/albums', formData);
   },
 );
+
+export const deleteAlbum = createAsyncThunk<void, string>(
+  'albums/deleteOne',
+  async (id) => {
+    await axiosApi.delete('albums/' + id);
+  }
+);

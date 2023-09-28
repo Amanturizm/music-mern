@@ -25,6 +25,13 @@ export const createArtist = createAsyncThunk<void, IArtistForm>(
       }
     });
 
-    await axiosApi.post('/artists', formData);
+    await axiosApi.post('artists', formData);
   },
+);
+
+export const deleteArtist = createAsyncThunk<void, string>(
+  'artists/deleteOne',
+  async (id) => {
+    await axiosApi.delete('artists/' + id);
+  }
 );

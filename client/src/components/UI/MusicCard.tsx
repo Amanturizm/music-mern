@@ -1,11 +1,17 @@
 import React from 'react';
 import { Box, CardMedia, Grid, styled, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
+import { MusicNote } from '@mui/icons-material';
 import { apiUrl } from '../../constants';
 import { IAlbum, IArtist } from '../../types';
-import { MusicNote } from '@mui/icons-material';
 import no_album_image from '../../assets/no-album.png';
 import NoArtistSvg from './NoArtistSvg';
-import { useAppSelector } from '../../app/hook';
+import { useAppDispatch, useAppSelector } from '../../app/hook';
+import axiosApi from '../../axiosApi';
+import { deleteArtist, fetchArtists } from '../../features/artists/ArtistsThunk';
+import { deleteAlbum, fetchAlbums } from '../../features/albums/AlbumsThunk';
+import { useParams } from 'react-router-dom';
 
 const CssGrid = styled(Grid)({
   display: 'flex',
@@ -28,7 +34,11 @@ interface Props {
 
 const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
   const item = artist || album;
+
+  const { id } = useParams() as { id: string };
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.users);
+  const itemName = artist ? 'artist' : 'album';
 
   const imageUrl: string = (item && item.image) ? apiUrl + item.image : no_album_image;
 
@@ -47,10 +57,38 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
     image = <NoArtistSvg />;
   }
 
+  const deleteItem = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    try {
+      if (artist) {
+        await dispatch(deleteArtist(artist._id));
+        await dispatch(fetchArtists());
+      } else {
+        await dispatch(deleteAlbum(album!._id));
+        await dispatch(fetchAlbums(id));
+      }
+    } catch {}
+  };
+
+  const togglePublished = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    try {
+      await axiosApi.patch(`${itemName}s/${item?._id}/togglePublished`);
+      if (artist) {
+        await dispatch(fetchArtists());
+      } else {
+        await dispatch(fetchAlbums(id));
+      }
+    } catch {}
+  };
+
   const isVisible = (item && (item.isPublished || (user && (user.role === 'admin' || user._id === item.user))));
 
   return (item && !isVisible) ? null : (
     <CssGrid item
+             position="relative"
              onClick={onClick}
              width={artist ? 180 : 200}
              height={artist ? 210 : 240}
@@ -95,6 +133,36 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
               <MusicNote fontSize="small" />{album.amount}
             </Typography>
           </Box> : null
+      }
+      {
+        (user && (user.role === 'admin' || user._id === item?.user)) &&
+        <DeleteIcon
+          sx={{
+            position: 'absolute',
+            left: 8,
+            top: 8,
+            zIndex: 2,
+            ':hover': {
+              transform: 'scale(1.2)'
+            }
+          }}
+          onClick={deleteItem}
+        />
+      }
+      {
+        (!item?.isPublished && (user && (user.role === 'admin' || user._id === item?.user))) &&
+        <UnpublishedIcon
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            zIndex: 2,
+            ':hover': {
+              transform: 'scale(1.2)'
+            }
+        }}
+          onClick={togglePublished}
+        />
       }
     </CssGrid>
   );

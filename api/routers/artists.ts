@@ -51,7 +51,7 @@ artistsRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, nex
       return res.status(401).send({ error: 'Don\'t have enough rights!' });
     }
 
-    if (artist.isPublished) {
+    if (user.role !== 'admin' && artist.isPublished) {
       return res.status(400).send({ error: 'Artist published!' });
     }
 

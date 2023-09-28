@@ -77,7 +77,7 @@ albumsRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, next
       return res.status(401).send({ error: 'Don\'t have enough rights!' });
     }
 
-    if (album.isPublished) {
+    if (user.role !== 'admin' && album.isPublished) {
       return res.status(400).send({ error: 'Album published!' });
     }
 
