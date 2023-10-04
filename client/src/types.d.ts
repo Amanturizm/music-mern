@@ -77,9 +77,11 @@ export interface IUser {
   password: string;
   role: string;
   token: string;
+  displayName?: string;
+  googleID?: string;
 }
 
-export type TUserRegister = Omit<IUser, '_id' | 'token' | 'role'>;
+export type TUserRegister = Omit<IUser, '_id' | 'token' | 'role' | 'googleID'>;
 
 export interface IRegisterResponse {
   user: IUser;

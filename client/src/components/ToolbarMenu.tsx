@@ -88,7 +88,7 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
         <MenuItem onClick={handleClose}
                   sx={{ width: 200 }}
         >
-          <Avatar /> {user.username}
+          <Avatar /> {user.displayName || user.username}
         </MenuItem>
         <Divider color="#ccc" />
         <MenuItem onClick={() => navigate('/add-artist')}>

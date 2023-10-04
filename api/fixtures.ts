@@ -21,11 +21,13 @@ import User from './models/User';
 
   const [user_1, user_2, admin_1] = await User.create(
     {
+      displayName: 'Himer Rokovoy',
       username: 'Okabe Rintarou',
       password: 'el.psy.congroo',
       token: crypto.randomUUID(),
     },
     {
+      displayName: 'Kurisutiiina',
       username: 'Kurisu Makise',
       password: 'iwantmyownspoon',
       token: crypto.randomUUID(),

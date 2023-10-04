@@ -16,7 +16,8 @@ import {
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { TUserRegister } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
-import { login } from './usersThunk';
+import { googleLogin, login } from './usersThunk';
+import { GoogleLogin } from '@react-oauth/google';
 
 const CssContainer = styled(Container)({
   margin: '150px auto',
@@ -51,6 +52,11 @@ const Login = () => {
     } catch {}
   };
 
+  const googleLoginHandler = async (credential: string) => {
+    await dispatch(googleLogin(credential)).unwrap();
+    navigate('/');
+  };
+
   return (
     <CssContainer maxWidth="xs">
       <Box
@@ -67,6 +73,19 @@ const Login = () => {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
+
+        <Box sx={{ pt: 2 }}>
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              if (credentialResponse.credential) {
+                void googleLoginHandler(credentialResponse.credential);
+              }
+            }}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          />
+        </Box>
 
         {registerError && (
           <Alert severity="error" sx={{ mt: 2, width: '100%' }}>

@@ -24,6 +24,7 @@ const CssContainer = styled(Container)({
 
 const initialState: TUserRegister = {
   username: '',
+  displayName: '',
   password: '',
 };
 
@@ -88,6 +89,17 @@ const SignUp = () => {
                 autoComplete="new-username"
                 error={Boolean(getFieldError('username'))}
                 helperText={getFieldError('username')}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                sx={{ width: '100%' }}
+                label="Display name"
+                name="displayName"
+                value={state.displayName}
+                onChange={changeValue}
+                autoComplete="new-displayName"
               />
             </Grid>
 

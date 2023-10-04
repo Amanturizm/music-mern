@@ -37,6 +37,7 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
                position="fixed"
                top={90}
                right={67}
+               zIndex={2}
                style={{ borderRadius: 20 }}
           >
             <Youtube src={currentPlayTrack.youtube} visible={visibleVideo} isAutoPlay />

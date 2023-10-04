@@ -1,6 +1,6 @@
 import { IUser, IValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
-import { login, register } from './usersThunk';
+import { googleLogin, login, register } from './usersThunk';
 
 interface State {
   user: IUser | null;
@@ -23,28 +23,40 @@ export const usersSlice = createSlice({
     }
   },
   extraReducers: builder => {
-    builder.addCase(register.pending, (state: State) => {
+    builder.addCase(register.pending, (state) => {
       state.registerLoading = true;
       state.registerError = null;
     });
-    builder.addCase(register.fulfilled, (state: State, { payload }) => {
+    builder.addCase(register.fulfilled, (state, { payload }) => {
       state.registerLoading = false;
       state.user = payload;
     });
-    builder.addCase(register.rejected, (state: State, { payload: error }) => {
+    builder.addCase(register.rejected, (state, { payload: error }) => {
       state.registerLoading = false;
       state.registerError = error || null;
     });
 
-    builder.addCase(login.pending, (state: State) => {
+    builder.addCase(login.pending, (state) => {
       state.registerLoading = true;
       state.registerError = null;
     });
-    builder.addCase(login.fulfilled, (state: State, { payload }) => {
+    builder.addCase(login.fulfilled, (state, { payload }) => {
       state.registerLoading = false;
       state.user = payload;
     });
-    builder.addCase(login.rejected, (state: State, { payload: error }) => {
+    builder.addCase(login.rejected, (state, { payload: error }) => {
+      state.registerLoading = false;
+      state.registerError = error || null;
+    });
+
+    builder.addCase(googleLogin.pending, (state) => {
+      state.registerLoading = true;
+    });
+    builder.addCase(googleLogin.fulfilled, (state, { payload: user }) => {
+      state.registerLoading = false;
+      state.user = user;
+    });
+    builder.addCase(googleLogin.rejected, (state, { payload: error }) => {
       state.registerLoading = false;
       state.registerError = error || null;
     });

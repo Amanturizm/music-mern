@@ -34,3 +34,19 @@ export const login = createAsyncThunk<IUser, TUserRegister, { rejectValue: IVali
     }
   }
 );
+
+export const googleLogin = createAsyncThunk<IUser, string, { rejectValue: IValidationError }>(
+  'users/googleLogin',
+  async (credential, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosApi.post<IRegisterResponse>('/users/google', { credential });
+
+      return data.user;
+    } catch (e) {
+      if (isAxiosError(e) && e.response && e.response.status === 400) {
+        return rejectWithValue(e.response.data as IValidationError);
+      }
+      throw e;
+    }
+  },
+);
