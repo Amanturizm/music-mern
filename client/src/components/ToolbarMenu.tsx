@@ -38,7 +38,7 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
 
   let avatar = '';
   if (user.avatar) {
-    avatar = user.avatar.includes('http') ? apiUrl + user.avatar : user.avatar.toString();
+    avatar = user.avatar.includes('http') ? user.avatar.toString() : apiUrl + user.avatar;
   }
 
   return (
