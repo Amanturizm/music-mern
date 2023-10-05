@@ -5,6 +5,7 @@ import ToolbarMenu from './ToolbarMenu';
 import { clearUser } from '../features/users/usersSlice';
 import { fetchTrackHistory } from '../features/track_history/TrackHistoryThunk';
 import { clearCurrentPlayTrack } from '../features/tracks/TracksSlice';
+import { logout } from '../features/users/usersThunk';
 
 const CssButton = styled(Button)({
   ':hover': {
@@ -33,6 +34,7 @@ const AppToolbar = () => {
 
   const onLogout = async () => {
     try {
+      await dispatch(logout()).unwrap();
       dispatch(clearUser());
       dispatch(clearCurrentPlayTrack());
       localStorage.removeItem('persist:music:users');
@@ -47,7 +49,7 @@ const AppToolbar = () => {
       <Toolbar sx={{ bgcolor: '#121212' }}>
         <Typography variant="h5" component="div" sx={{ flexGrow: 1, letterSpacing: 1 }}>
           <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>
-            Attractor School
+            GazGolder
           </Link>
         </Typography>
 

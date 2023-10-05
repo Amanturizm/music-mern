@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
-  image: File | null;
+  image?: File | null;
 }
 
 const FileInput: React.FC<Props> = ({ onChange, name, image }) => {

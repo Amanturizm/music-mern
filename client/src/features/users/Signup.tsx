@@ -135,9 +135,8 @@ const SignUp = () => {
           </Grid>
 
           <Grid item xs={12} display="flex" alignItems="center" gap={3}>
-            {state.avatar && (
-              <FileInput name="image" onChange={changeFileValue} image={state.avatar} />
-            )}
+            <FileInput name="image" onChange={changeFileValue} image={state.avatar} />
+
             <Button
               type="submit"
               fullWidth

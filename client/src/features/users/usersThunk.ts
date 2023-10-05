@@ -65,3 +65,7 @@ export const googleLogin = createAsyncThunk<
     throw e;
   }
 });
+
+export const logout = createAsyncThunk('users/logout', async () => {
+  await axiosApi.delete('/users/sessions');
+});
