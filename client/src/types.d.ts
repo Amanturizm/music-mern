@@ -78,13 +78,18 @@ export interface IUser {
   role: string;
   token: string;
   displayName?: string;
+  avatar?: File | null;
   googleID?: string;
+}
+
+export interface IUserForUsing extends IUser {
+  avatar: string | null;
 }
 
 export type TUserRegister = Omit<IUser, '_id' | 'token' | 'role' | 'googleID'>;
 
 export interface IRegisterResponse {
-  user: IUser;
+  user: IUserForUsing;
   message: string;
 }
 

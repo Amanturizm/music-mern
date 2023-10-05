@@ -1,4 +1,4 @@
-import mongoose, { ObjectId, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
 export interface IArtist {
   name: string;
@@ -42,6 +42,7 @@ export interface IUser {
   token: string;
   role: string;
   displayName?: string;
+  avatar?: string | null;
   googleID?: string;
 }
 
@@ -66,6 +67,6 @@ export interface ITrackHistory {
 export interface ITrackHistoryMutation {
   _id: Types.ObjectId;
   user: Types.ObjectId;
-  track: { name: string, album: IAlbumMutation };
+  track: { name: string; album: IAlbumMutation };
   datetime: Date;
 }

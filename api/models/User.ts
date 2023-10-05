@@ -1,4 +1,4 @@
-import { Schema, model, Model, HydratedDocument } from 'mongoose';
+import { HydratedDocument, Model, model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { IUser } from '../types';
 import { randomUUID } from 'crypto';
@@ -17,9 +17,12 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
     required: true,
     unique: true,
     validate: {
-      validator: async function (this: HydratedDocument<IUser>, username: string): Promise<boolean> {
+      validator: async function (
+        this: HydratedDocument<IUser>,
+        username: string,
+      ): Promise<boolean> {
         if (!this.isModified('username')) return true;
-        const user: HydratedDocument<IUser> | null = await User.findOne({username});
+        const user: HydratedDocument<IUser> | null = await User.findOne({ username });
         return !Boolean(user);
       },
       message: 'This user is already registered',
@@ -40,6 +43,7 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
     enum: ['user', 'admin'],
   },
   displayName: String,
+  avatar: String,
   googleID: String,
 });
 
@@ -56,7 +60,7 @@ UserSchema.set('toJSON', {
     delete ret.password;
 
     return ret;
-  }
+  },
 });
 
 UserSchema.methods.generateToken = function () {

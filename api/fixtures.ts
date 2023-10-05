@@ -8,7 +8,7 @@ import User from './models/User';
 (async () => {
   await mongoose.connect(config.db);
   const db = mongoose.connection;
-  
+
   try {
     await db.dropCollection('albums');
     await db.dropCollection('artists');
@@ -40,72 +40,64 @@ import User from './models/User';
     },
   );
 
-  const [
-    Oxxxymiron,
-    R1Fmabes,
-    MC_No_Limit,
-    Diktator_UAV,
-    KnownAim,
-    Booker,
-    JesusAVGN,
-    Abbalbisk
-  ] = await Artist.create(
-    {
-      name: 'Oxxxymiron',
-      image: 'fixtures/oxxxymiron.jpg',
-      info: 'Russian rap artist, songwriter and public figure.',
-      user: user_1._id,
-      isPublished: true,
-    },
-    {
-      name: 'R1Fmabes',
-      image: 'fixtures/r1fmabes.png',
-      info: 'Battle rapper from Kaluga, champion Break on Bits (season 1), participant of SLOVO: Moscow, organizer and participant of the Kaluga battle site More Than Battle (BCHB).',
-      user: user_1._id,
-      isPublished: true,
-    },
-    {
-      name: 'MC No Limit',
-      image: 'fixtures/mc_no_limit.png',
-      info: 'Grime artist from east London, born in Ukraine. Reads in Russian and English. No Limit is a veteran of the grime movement and in fact the first MC to start performing grime in Russian.',
-      user: user_2._id,
-      isPublished: true,
-    },
-    {
-      name: 'Диктатор UAV',
-      image: 'fixtures/diktator.jpg',
-      info: 'Rap artist, battle MC, semi-finalist of VRuBay Battle (Season 1) and participant of 140 BPM Battle.',
-      user: user_1._id,
-      isPublished: true,
-    },
-    {
-      name: 'KnownAim',
-      image: 'fixtures/knownaim.jpg',
-      info: 'KnownAim, also previously known as Niki-Tiki-Tavi (Nikita Dmitrievich Gashnikov) is a rap artist, battle MC, participant in SLOVO: Saint-Petersburg (season 1), participant in the 140 BPM Cup (season 1).',
-      user: user_2._id,
-      isPublished: true,
-    },
-    {
-      name: 'Booker',
-      image: null,
-      info: 'Booker, previously also known as Booker D. Fred (Fedor Dmitrievich Ignatiev) - rap artist, battle MC, finalist of Versus: Fresh Blood (season 2), semi-finalist of SLOVO: Saint-Petersburg (season 2), champion of #STRELASPB (1 season), former host of the rap project VSRAP RAPYOU battle. Former member of the creative association Antihype, founder of the NKVD team.',
-      user: user_2._id,
-      isPublished: true,
-    },
-    {
-      name: 'JesusAVGN',
-      image: 'fixtures/hesus.jpeg',
-      info: 'JesusAVGN is a Russian streamer, blogger and let\'s player, who gained fame thanks to YouTube and Twitch. Alexey created his YouTube channel called JesusAVGN on May 3, 2012. And on August 16, I opened an account on Twitch. At first he._id his face, but on December 31, 2015, he finally announced (showed his face).',
-      user: user_1._id,
-      isPublished: true,
-    },
-    {
-      name: 'Abbalbisk',
-      image: 'fixtures/abbalbisk.png',
-      info: 'Abbalbisk (Sergey Vladimirovich Starikov) is a battle rapper from St. Petersburg, champion of SLOVO: Saint-Petersburg (season 2), champion of the Versus Team+Up team season (together with XXOS), quarter-finalist of RBL (season 3).',
-      user: user_1._id,
-    },
-  );
+  const [Oxxxymiron, R1Fmabes, MC_No_Limit, Diktator_UAV, KnownAim, Booker, JesusAVGN, Abbalbisk] =
+    await Artist.create(
+      {
+        name: 'Oxxxymiron',
+        image: 'fixtures/oxxxymiron.jpg',
+        info: 'Russian rap artist, songwriter and public figure.',
+        user: user_1._id,
+        isPublished: true,
+      },
+      {
+        name: 'R1Fmabes',
+        image: 'fixtures/r1fmabes.png',
+        info: 'Battle rapper from Kaluga, champion Break on Bits (season 1), participant of SLOVO: Moscow, organizer and participant of the Kaluga battle site More Than Battle (BCHB).',
+        user: user_1._id,
+        isPublished: true,
+      },
+      {
+        name: 'MC No Limit',
+        image: 'fixtures/mc_no_limit.png',
+        info: 'Grime artist from east London, born in Ukraine. Reads in Russian and English. No Limit is a veteran of the grime movement and in fact the first MC to start performing grime in Russian.',
+        user: user_2._id,
+        isPublished: true,
+      },
+      {
+        name: 'Диктатор UAV',
+        image: 'fixtures/diktator.jpg',
+        info: 'Rap artist, battle MC, semi-finalist of VRuBay Battle (Season 1) and participant of 140 BPM Battle.',
+        user: user_1._id,
+        isPublished: true,
+      },
+      {
+        name: 'KnownAim',
+        image: 'fixtures/knownaim.jpg',
+        info: 'KnownAim, also previously known as Niki-Tiki-Tavi (Nikita Dmitrievich Gashnikov) is a rap artist, battle MC, participant in SLOVO: Saint-Petersburg (season 1), participant in the 140 BPM Cup (season 1).',
+        user: user_2._id,
+        isPublished: true,
+      },
+      {
+        name: 'Booker',
+        image: null,
+        info: 'Booker, previously also known as Booker D. Fred (Fedor Dmitrievich Ignatiev) - rap artist, battle MC, finalist of Versus: Fresh Blood (season 2), semi-finalist of SLOVO: Saint-Petersburg (season 2), champion of #STRELASPB (1 season), former host of the rap project VSRAP RAPYOU battle. Former member of the creative association Antihype, founder of the NKVD team.',
+        user: user_2._id,
+        isPublished: true,
+      },
+      {
+        name: 'JesusAVGN',
+        image: 'fixtures/hesus.jpeg',
+        info: "JesusAVGN is a Russian streamer, blogger and let's player, who gained fame thanks to YouTube and Twitch. Alexey created his YouTube channel called JesusAVGN on May 3, 2012. And on August 16, I opened an account on Twitch. At first he._id his face, but on December 31, 2015, he finally announced (showed his face).",
+        user: user_1._id,
+        isPublished: true,
+      },
+      {
+        name: 'Abbalbisk',
+        image: 'fixtures/abbalbisk.png',
+        info: 'Abbalbisk (Sergey Vladimirovich Starikov) is a battle rapper from St. Petersburg, champion of SLOVO: Saint-Petersburg (season 2), champion of the Versus Team+Up team season (together with XXOS), quarter-finalist of RBL (season 3).',
+        user: user_1._id,
+      },
+    );
 
   const [
     miXXXtape_I,
@@ -116,7 +108,7 @@ import User from './models/User';
     KBCKMC,
     THE_BOX,
     Other,
-    ThinkForYourself
+    ThinkForYourself,
   ] = await Album.create(
     {
       name: 'miXXXtape I',

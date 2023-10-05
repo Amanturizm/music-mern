@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { HydratedDocument } from "mongoose";
-import User from "../models/User";
+import { Request, Response, NextFunction } from 'express';
+import { HydratedDocument } from 'mongoose';
+import User from '../models/User';
 import { IUser } from '../types';
 
 export interface RequestWithUser extends Request {
@@ -13,18 +13,18 @@ const auth = async (expressReq: Request, res: Response, next: NextFunction) => {
   const token = req.get('Authorization');
 
   if (!token) {
-    return res.status(400).send({ error: 'No token !' })
+    return res.status(400).send({ error: 'No token !' });
   }
 
   const user = await User.findOne({ token });
 
   if (!user) {
-    return res.status(400). send({ error: 'Incorrect token !'} );
+    return res.status(400).send({ error: 'Incorrect token !' });
   }
 
   req.user = user;
 
   next();
-}
+};
 
 export default auth;

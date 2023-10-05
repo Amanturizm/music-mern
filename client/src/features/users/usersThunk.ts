@@ -1,52 +1,67 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import { IRegisterResponse, IUser, IValidationError, TUserRegister } from '../../types';
+import { IRegisterResponse, IUserForUsing, IValidationError, TUserRegister } from '../../types';
 import { isAxiosError } from 'axios';
 
-export const register = createAsyncThunk<IUser, TUserRegister, { rejectValue: IValidationError }>(
-  'users/register',
-  async (userRegister, { rejectWithValue }) => {
-    try {
-      const { data } = await axiosApi.post<IUser>('/users', userRegister);
-      return data;
-    } catch (e) {
-      if (isAxiosError(e) && e.response && e.response.status === 400) {
-        return rejectWithValue(e.response.data);
+export const register = createAsyncThunk<
+  IUserForUsing,
+  TUserRegister,
+  { rejectValue: IValidationError }
+>('users/register', async (userRegister, { rejectWithValue }) => {
+  try {
+    const formData = new FormData();
+    const keys = Object.keys(userRegister) as (keyof TUserRegister)[];
+
+    keys.forEach((key) => {
+      const value = userRegister[key];
+
+      if (value !== undefined && value !== null) {
+        formData.append(key, value);
       }
+    });
 
-      throw e;
+    const { data } = await axiosApi.post<IUserForUsing>('/users', formData);
+
+    return data;
+  } catch (e) {
+    if (isAxiosError(e) && e.response && e.response.status === 400) {
+      return rejectWithValue(e.response.data);
     }
-  },
-);
 
-export const login = createAsyncThunk<IUser, TUserRegister, { rejectValue: IValidationError }>(
-  'users/login',
-  async (user, { rejectWithValue }) => {
-    try {
-      const { data } = await axiosApi.post<IRegisterResponse>('/users/sessions', user);
-      return data.user;
-    } catch (e) {
-      if (isAxiosError(e) && e.response && e.response.status === 400) {
-        return rejectWithValue(e.response.data);
-      }
+    throw e;
+  }
+});
 
-      throw e;
+export const login = createAsyncThunk<
+  IUserForUsing,
+  TUserRegister,
+  { rejectValue: IValidationError }
+>('users/login', async (user, { rejectWithValue }) => {
+  try {
+    const { data } = await axiosApi.post<IRegisterResponse>('/users/sessions', user);
+    return data.user;
+  } catch (e) {
+    if (isAxiosError(e) && e.response && e.response.status === 400) {
+      return rejectWithValue(e.response.data);
     }
-  },
-);
 
-export const googleLogin = createAsyncThunk<IUser, string, { rejectValue: IValidationError }>(
-  'users/googleLogin',
-  async (credential, { rejectWithValue }) => {
-    try {
-      const { data } = await axiosApi.post<IRegisterResponse>('/users/google', { credential });
+    throw e;
+  }
+});
 
-      return data.user;
-    } catch (e) {
-      if (isAxiosError(e) && e.response && e.response.status === 400) {
-        return rejectWithValue(e.response.data as IValidationError);
-      }
-      throw e;
+export const googleLogin = createAsyncThunk<
+  IUserForUsing,
+  string,
+  { rejectValue: IValidationError }
+>('users/googleLogin', async (credential, { rejectWithValue }) => {
+  try {
+    const { data } = await axiosApi.post<IRegisterResponse>('/users/google', { credential });
+
+    return data.user;
+  } catch (e) {
+    if (isAxiosError(e) && e.response && e.response.status === 400) {
+      return rejectWithValue(e.response.data as IValidationError);
     }
-  },
-);
+    throw e;
+  }
+});

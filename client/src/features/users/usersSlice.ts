@@ -1,9 +1,9 @@
-import { IUser, IValidationError } from '../../types';
+import { IUserForUsing, IValidationError } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
 import { googleLogin, login, register } from './usersThunk';
 
 interface State {
-  user: IUser | null;
+  user: IUserForUsing | null;
   registerLoading: boolean;
   registerError: IValidationError | null;
 }

@@ -16,6 +16,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { TUserRegister } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { register } from './usersThunk';
+import FileInput from '../../components/UI/FileInput';
 
 const CssContainer = styled(Container)({
   margin: '150px auto',
@@ -25,6 +26,7 @@ const CssContainer = styled(Container)({
 const initialState: TUserRegister = {
   username: '',
   displayName: '',
+  avatar: null,
   password: '',
 };
 
@@ -40,6 +42,17 @@ const SignUp = () => {
     const { name, value } = e.target;
 
     setState((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const changeFileValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+
+    if (files) {
+      setState((prevState) => ({
+        ...prevState,
+        [name]: files[0],
+      }));
+    }
   };
 
   const sendData = async (e: React.FormEvent) => {
@@ -121,22 +134,27 @@ const SignUp = () => {
             </Grid>
           </Grid>
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{
-              mt: 3,
-              mb: 2,
-              ':disabled': {
-                pointerEvents: 'auto',
-                cursor: 'not-allowed',
-              },
-            }}
-            disabled={registerLoading}
-          >
-            {registerLoading ? <CircularProgress size={25} /> : 'Sign Up'}
-          </Button>
+          <Grid item xs={12} display="flex" alignItems="center" gap={3}>
+            {state.avatar && (
+              <FileInput name="image" onChange={changeFileValue} image={state.avatar} />
+            )}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 3,
+                mb: 2,
+                ':disabled': {
+                  pointerEvents: 'auto',
+                  cursor: 'not-allowed',
+                },
+              }}
+              disabled={registerLoading}
+            >
+              {registerLoading ? <CircularProgress size={25} /> : 'Sign Up'}
+            </Button>
+          </Grid>
 
           <Grid container justifyContent="flex-end">
             <Grid item>

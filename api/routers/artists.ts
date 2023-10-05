@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 import Artist from '../models/Artist';
 import { IArtist } from '../types';
 import { imagesUpload } from '../multer';
@@ -10,7 +10,7 @@ const artistsRouter = express.Router();
 
 artistsRouter.get('/', async (req, res) => {
   try {
-    const artists = await Artist.find() as IArtist[];
+    const artists = (await Artist.find()) as IArtist[];
     return res.send(artists);
   } catch {
     return res.sendStatus(500);
@@ -41,14 +41,14 @@ artistsRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, nex
   try {
     const user = (req as RequestWithUser).user;
 
-    const artist = await Artist.findById(req.params.id) as HydratedDocument<IArtist>;
+    const artist = (await Artist.findById(req.params.id)) as HydratedDocument<IArtist>;
 
     if (!artist) {
       return res.status(404).send({ error: 'Artist not found!' });
     }
 
-    if (user.role !== 'admin' && (user._id.toString() !== artist.user.toString())) {
-      return res.status(401).send({ error: 'Don\'t have enough rights!' });
+    if (user.role !== 'admin' && user._id.toString() !== artist.user.toString()) {
+      return res.status(401).send({ error: "Don't have enough rights!" });
     }
 
     if (user.role !== 'admin' && artist.isPublished) {
@@ -58,14 +58,13 @@ artistsRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, nex
     await artist.deleteOne();
     return res.send({ message: 'Artist deleted!' });
   } catch (e) {
-
     return next(e);
   }
 });
 
 artistsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
   try {
-    const artist = await Artist.findById(req.params.id) as HydratedDocument<IArtist>;
+    const artist = (await Artist.findById(req.params.id)) as HydratedDocument<IArtist>;
 
     artist.isPublished = !artist.isPublished;
 

@@ -1,7 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/User';
-import { IAlbum, IAlbumMutation, ITrack, ITrackHistory, ITrackHistoryMutation, ITrackMutation, IUser } from '../types';
+import {
+  IAlbum,
+  IAlbumMutation,
+  ITrack,
+  ITrackHistory,
+  ITrackHistoryMutation,
+  ITrackMutation,
+  IUser,
+} from '../types';
 import Track_history from '../models/Track_history';
 import auth, { RequestWithUser } from '../middleware/auth';
 import Track from '../models/Track';
@@ -13,19 +21,21 @@ trackHistoryRouter.get('/', auth, async (req, res, next) => {
   try {
     const user = (req as RequestWithUser).user;
 
-    const track_history = await Track_history
-      .find({ user: user._id })
+    const track_history = (await Track_history.find({ user: user._id })
       .sort({ datetime: -1 })
-      .populate('track', 'name album') as ITrackHistory[];
+      .populate('track', 'name album')) as ITrackHistory[];
 
-    const newTrackHistory: Awaited<ITrackHistoryMutation>[] =
-      await Promise.all(track_history.map(async ({ _id, user, track, datetime }) => {
-        const album = await Album
-          .findOne({ _id: track.album })
-          .populate('artist', 'name user') as IAlbumMutation;
+    const newTrackHistory: Awaited<ITrackHistoryMutation>[] = await Promise.all(
+      track_history.map(async ({ _id, user, track, datetime }) => {
+        const album = (await Album.findOne({ _id: track.album }).populate(
+          'artist',
+          'name user',
+        )) as IAlbumMutation;
 
         return {
-          _id, user, datetime,
+          _id,
+          user,
+          datetime,
           track: {
             name: track.name,
             user: track.user,
@@ -41,7 +51,8 @@ trackHistoryRouter.get('/', auth, async (req, res, next) => {
             },
           },
         };
-      }));
+      }),
+    );
 
     return res.send(newTrackHistory);
   } catch (e) {

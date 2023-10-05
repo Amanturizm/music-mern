@@ -12,11 +12,12 @@ import {
   Tooltip,
 } from '@mui/material';
 import { Logout } from '@mui/icons-material';
-import { IUser } from '../types';
+import { IUserForUsing } from '../types';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from '../constants';
 
 interface Props {
-  user: IUser;
+  user: IUserForUsing;
   onTrackHistory: React.MouseEventHandler;
   onLogout: React.MouseEventHandler;
 }
@@ -35,6 +36,11 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
     setAnchorEl(null);
   };
 
+  let avatar = '';
+  if (user.avatar) {
+    avatar = user.avatar.includes(apiUrl) ? apiUrl + user.avatar : user.avatar.toString();
+  }
+
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -47,7 +53,9 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>{user.username[0].toUpperCase()}</Avatar>
+            <Avatar src={avatar} sx={{ width: 32, height: 32 }}>
+              {user.username[0].toUpperCase()}
+            </Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -95,7 +103,7 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose} sx={{ width: 200 }}>
-          <Avatar /> {user.displayName || user.username}
+          <Avatar src={avatar} /> {user.displayName || user.username}
         </MenuItem>
         <Divider color="#ccc" />
         <MenuItem onClick={() => navigate('/add-artist')}>

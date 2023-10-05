@@ -8,17 +8,13 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
-  "ignorePatterns": [
-  	".eslintrc.js"
-  ],
+  "ignorePatterns": [".eslintrc.js"],
   "overrides": [
     {
       "env": {
-      	"node": true
+        "node": true
       },
-      "files": [
-      	".eslintrc.{js,cjs}"
-      ],
+      "files": [".eslintrc.{js,cjs}"],
       "parserOptions": {
         "sourceType": "script"
       }
@@ -29,8 +25,6 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [
-  	"@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
   "rules": {}
 }
