@@ -67,7 +67,7 @@ export interface ITrackMutation extends ITrack {
 export interface ITrackHistory {
   _id: string;
   user: IUser;
-  track: { name: string, album: IAlbumFull, };
+  track: { name: string; album: IAlbumFull };
   datetime: Date;
 }
 
@@ -93,8 +93,8 @@ export interface IValidationError {
     [key: string]: {
       name: string;
       message: string;
-    },
-  },
+    };
+  };
   error: string;
   message: string;
   name: string;

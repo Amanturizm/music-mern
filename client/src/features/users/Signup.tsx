@@ -10,7 +10,7 @@ import {
   Link,
   styled,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { TUserRegister } from '../../types';
@@ -30,7 +30,7 @@ const initialState: TUserRegister = {
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
-  const { registerLoading, registerError } = useAppSelector(state => state.users);
+  const { registerLoading, registerError } = useAppSelector((state) => state.users);
 
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const SignUp = () => {
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setState(prevState => ({ ...prevState, [name]: value }));
+    setState((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const sendData = async (e: React.FormEvent) => {
@@ -48,7 +48,9 @@ const SignUp = () => {
     try {
       await dispatch(register(state)).unwrap();
       navigate('/');
-    } catch {}
+    } catch {
+      // nothing
+    }
   };
 
   const getFieldError = (fieldName: string) => {
@@ -68,7 +70,7 @@ const SignUp = () => {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
 
@@ -76,7 +78,7 @@ const SignUp = () => {
           Sign up
         </Typography>
 
-        <Box component="form" onSubmit={sendData} sx={{mt: 3}}>
+        <Box component="form" onSubmit={sendData} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -129,11 +131,11 @@ const SignUp = () => {
               ':disabled': {
                 pointerEvents: 'auto',
                 cursor: 'not-allowed',
-              }
+              },
             }}
             disabled={registerLoading}
           >
-            {registerLoading ? <CircularProgress size={25} /> : ('Sign Up')}
+            {registerLoading ? <CircularProgress size={25} /> : 'Sign Up'}
           </Button>
 
           <Grid container justifyContent="flex-end">

@@ -22,7 +22,7 @@ const ArtistsForm = () => {
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setState(prevState => ({ ...prevState, [name]: value }));
+    setState((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const changeFileValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,17 +42,20 @@ const ArtistsForm = () => {
     try {
       await dispatch(createArtist(state));
       navigate('/');
-    } catch {}
+    } catch {
+      // nothing
+    }
   };
 
   return (
-    <Box component="form"
-         width="60%"
-         margin="10% auto"
-         display="flex"
-         flexDirection="column"
-         gap={2}
-         onSubmit={sendData}
+    <Box
+      component="form"
+      width="60%"
+      margin="10% auto"
+      display="flex"
+      flexDirection="column"
+      gap={2}
+      onSubmit={sendData}
     >
       <TextField
         sx={{ width: '100%' }}
@@ -64,7 +67,8 @@ const ArtistsForm = () => {
       />
 
       <TextField
-        multiline rows={3}
+        multiline
+        rows={3}
         sx={{ width: '100%' }}
         label="Info"
         name="info"
@@ -72,16 +76,8 @@ const ArtistsForm = () => {
         onChange={changeValue}
       />
 
-      <Box component="div"
-           display="flex"
-           gap={2}
-      >
-        <FileInput
-          label="image"
-          name="image"
-          onChange={changeFileValue}
-          image={state.image}
-        />
+      <Box component="div" display="flex" gap={2}>
+        <FileInput name="image" onChange={changeFileValue} image={state.image} />
 
         <LoadingButton
           sx={{
@@ -89,7 +85,7 @@ const ArtistsForm = () => {
             ':disabled': {
               pointerEvents: 'auto',
               cursor: 'not-allowed',
-            }
+            },
           }}
           type="submit"
           endIcon={<SendIcon />}

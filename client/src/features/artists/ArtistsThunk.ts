@@ -2,14 +2,11 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
 import { IArtist, IArtistForm } from '../../types';
 
-export const fetchArtists = createAsyncThunk<IArtist[]>(
-  'artists/fetchAll',
-  async () => {
-    const { data } = await axiosApi<IArtist[]>('artists');
+export const fetchArtists = createAsyncThunk<IArtist[]>('artists/fetchAll', async () => {
+  const { data } = await axiosApi<IArtist[]>('artists');
 
-    return data;
-  }
-);
+  return data;
+});
 
 export const createArtist = createAsyncThunk<void, IArtistForm>(
   'artists/createOne',
@@ -17,7 +14,7 @@ export const createArtist = createAsyncThunk<void, IArtistForm>(
     const formData = new FormData();
     const keys = Object.keys(artist) as (keyof IArtistForm)[];
 
-    keys.forEach(key => {
+    keys.forEach((key) => {
       const value = artist[key];
 
       if (value !== null) {
@@ -29,9 +26,6 @@ export const createArtist = createAsyncThunk<void, IArtistForm>(
   },
 );
 
-export const deleteArtist = createAsyncThunk<void, string>(
-  'artists/deleteOne',
-  async (id) => {
-    await axiosApi.delete('artists/' + id);
-  }
-);
+export const deleteArtist = createAsyncThunk<void, string>('artists/deleteOne', async (id) => {
+  await axiosApi.delete('artists/' + id);
+});

@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import HistoryIcon from '@mui/icons-material/History';
-import { Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Divider,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@mui/material';
 import { Logout } from '@mui/icons-material';
 import { IUser } from '../types';
 import { useNavigate } from 'react-router-dom';
@@ -85,9 +94,7 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}
-                  sx={{ width: 200 }}
-        >
+        <MenuItem onClick={handleClose} sx={{ width: 200 }}>
           <Avatar /> {user.displayName || user.username}
         </MenuItem>
         <Divider color="#ccc" />
@@ -117,7 +124,7 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
         </MenuItem>
         <MenuItem onClick={onLogout}>
           <ListItemIcon>
-            <Logout fontSize="small" sx={{ color: '#fff', marginLeft: .5 }} />
+            <Logout fontSize="small" sx={{ color: '#fff', marginLeft: 0.5 }} />
           </ListItemIcon>
           Logout
         </MenuItem>

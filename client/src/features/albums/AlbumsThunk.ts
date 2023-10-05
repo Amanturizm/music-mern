@@ -11,39 +11,30 @@ export const fetchAlbums = createAsyncThunk<IAlbum[], string | undefined>(
     }
     const { data } = await axiosApi<IAlbum[]>('albums');
     return data;
-  }
-);
-
-export const fetchAlbum = createAsyncThunk<IAlbumFull, string>(
-  'albums/fetchOne',
-  async (id) => {
-    const { data } = await axiosApi('albums/' + id);
-
-    return data;
-  }
-);
-
-export const createAlbum = createAsyncThunk<void, IAlbumForm>(
-  'albums/createOne',
-  async (album) => {
-    const formData = new FormData();
-    const keys = Object.keys(album) as (keyof IAlbumForm)[];
-
-    keys.forEach(key => {
-      const value = album[key];
-
-      if (value !== null) {
-        formData.append(key, value);
-      }
-    });
-
-    await axiosApi.post('/albums', formData);
   },
 );
 
-export const deleteAlbum = createAsyncThunk<void, string>(
-  'albums/deleteOne',
-  async (id) => {
-    await axiosApi.delete('albums/' + id);
-  }
-);
+export const fetchAlbum = createAsyncThunk<IAlbumFull, string>('albums/fetchOne', async (id) => {
+  const { data } = await axiosApi('albums/' + id);
+
+  return data;
+});
+
+export const createAlbum = createAsyncThunk<void, IAlbumForm>('albums/createOne', async (album) => {
+  const formData = new FormData();
+  const keys = Object.keys(album) as (keyof IAlbumForm)[];
+
+  keys.forEach((key) => {
+    const value = album[key];
+
+    if (value !== null) {
+      formData.append(key, value);
+    }
+  });
+
+  await axiosApi.post('/albums', formData);
+});
+
+export const deleteAlbum = createAsyncThunk<void, string>('albums/deleteOne', async (id) => {
+  await axiosApi.delete('albums/' + id);
+});

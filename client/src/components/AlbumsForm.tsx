@@ -19,7 +19,7 @@ const initialState: IAlbumForm = {
 const AlbumsForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { artists } = useAppSelector(state => state.artists);
+  const { artists } = useAppSelector((state) => state.artists);
 
   const [state, setState] = useState<IAlbumForm>(initialState);
 
@@ -27,10 +27,12 @@ const AlbumsForm = () => {
     dispatch(fetchArtists());
   }, [dispatch]);
 
-  const changeValue = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
+  const changeValue = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent,
+  ) => {
     const { name, value } = e.target;
 
-    setState(prevState => ({ ...prevState, [name]: value }));
+    setState((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const changeFileValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,17 +52,20 @@ const AlbumsForm = () => {
     try {
       await dispatch(createAlbum(state));
       navigate('/');
-    } catch {}
+    } catch {
+      // nothing
+    }
   };
 
   return (
-    <Box component="form"
-         width="60%"
-         margin="10% auto"
-         display="flex"
-         flexDirection="column"
-         gap={2}
-         onSubmit={sendData}
+    <Box
+      component="form"
+      width="60%"
+      margin="10% auto"
+      display="flex"
+      flexDirection="column"
+      gap={2}
+      onSubmit={sendData}
     >
       <TextField
         sx={{ width: '100%' }}
@@ -81,29 +86,16 @@ const AlbumsForm = () => {
         onChange={changeValue}
       />
 
-      <Select
-        required
-        name="artist"
-        value={state.artist}
-        onChange={changeValue}
-      >
-        {
-          artists.map(artist => (
-            <MenuItem value={artist._id} key={artist._id}>{artist.name}</MenuItem>
-          ))
-        }
+      <Select required name="artist" value={state.artist} onChange={changeValue}>
+        {artists.map((artist) => (
+          <MenuItem value={artist._id} key={artist._id}>
+            {artist.name}
+          </MenuItem>
+        ))}
       </Select>
 
-      <Box component="div"
-           display="flex"
-           gap={2}
-      >
-        <FileInput
-          label="image"
-          name="image"
-          onChange={changeFileValue}
-          image={state.image}
-        />
+      <Box component="div" display="flex" gap={2}>
+        <FileInput name="image" onChange={changeFileValue} image={state.image} />
 
         <LoadingButton
           sx={{
@@ -111,7 +103,7 @@ const AlbumsForm = () => {
             ':disabled': {
               pointerEvents: 'auto',
               cursor: 'not-allowed',
-            }
+            },
           }}
           type="submit"
           endIcon={<SendIcon />}

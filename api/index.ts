@@ -30,4 +30,4 @@ app.get('*', (_, res) => res.sendStatus(404));
   process.on('exit', () => {
     mongoose.disconnect();
   });
-})().catch(e => console.error(e));
+})().catch((e) => console.error(e));

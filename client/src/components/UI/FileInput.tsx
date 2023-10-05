@@ -4,11 +4,10 @@ import { Button } from '@mui/material';
 interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
-  label: string;
   image: File | null;
 }
 
-const FileInput: React.FC<Props> = ({ onChange, name, label, image }) => {
+const FileInput: React.FC<Props> = ({ onChange, name, image }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [filename, setFilename] = useState<string>('');
@@ -38,7 +37,7 @@ const FileInput: React.FC<Props> = ({ onChange, name, label, image }) => {
   return (
     <>
       <input
-        style={{display: 'none'}}
+        style={{ display: 'none' }}
         type="file"
         name={name}
         onChange={onFileChange}
@@ -49,7 +48,7 @@ const FileInput: React.FC<Props> = ({ onChange, name, label, image }) => {
         onClick={activateInput}
         sx={{ textTransform: 'none', width: 100, height: 53, overflow: 'hidden' }}
       >
-        { filename || 'Browse' }
+        {filename || 'Browse'}
       </Button>
     </>
   );

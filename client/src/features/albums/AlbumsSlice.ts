@@ -18,7 +18,7 @@ const albumsSlice = createSlice({
   name: 'albums',
   initialState,
   reducers: {},
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(fetchAlbums.pending, (state: State) => {
       state.albumsLoading = true;
     });

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Artists from './features/artists/Artists';
 import Signup from './features/users/Signup';
@@ -14,21 +13,21 @@ const useRoutes = (isAuthenticated: boolean) => (
   <Routes>
     <Route path="/" element={<Artists />} />
     <Route path="/artist/:id" element={<Albums />} />
-    {
-      !isAuthenticated ?
-        <>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Navigate to="/login" />} />
-        </> :
-        <>
-          <Route path="/album/:id" element={<Tracks />} />
-          <Route path="/track_history" element={<TrackHistory />} />
-          <Route path="/add-artist" element={<ArtistsForm />} />
-          <Route path="/add-album" element={<AlbumsForm />} />
-          <Route path="/add-track" element={<TracksForm />} />
-        </>
-    }
+    {!isAuthenticated ? (
+      <>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Navigate to="/login" />} />
+      </>
+    ) : (
+      <>
+        <Route path="/album/:id" element={<Tracks />} />
+        <Route path="/track_history" element={<TrackHistory />} />
+        <Route path="/add-artist" element={<ArtistsForm />} />
+        <Route path="/add-album" element={<AlbumsForm />} />
+        <Route path="/add-track" element={<TracksForm />} />
+      </>
+    )}
     <Route path="*" element={<Navigate to="/" />} />
   </Routes>
 );

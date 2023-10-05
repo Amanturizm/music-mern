@@ -12,11 +12,9 @@ import './index.css';
 
 addInterceptors(store);
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID} >
+  <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
     <React.StrictMode>
       <PersistGate persistor={persistor}>
         <Provider store={store}>
@@ -26,5 +24,5 @@ root.render(
         </Provider>
       </PersistGate>
     </React.StrictMode>
-  </GoogleOAuthProvider>
+  </GoogleOAuthProvider>,
 );

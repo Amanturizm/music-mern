@@ -30,7 +30,7 @@ const tracksSlice = createSlice({
       state.visibleVideo = !state.visibleVideo;
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(fetchTracks.pending, (state: State) => {
       state.tracksLoading = true;
     });
@@ -45,4 +45,5 @@ const tracksSlice = createSlice({
 });
 
 export const tracksReducer = tracksSlice.reducer;
-export const { changeCurrentPlayTrack, clearCurrentPlayTrack, toggleVisibleVideo } = tracksSlice.actions;
+export const { changeCurrentPlayTrack, clearCurrentPlayTrack, toggleVisibleVideo } =
+  tracksSlice.actions;

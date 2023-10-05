@@ -18,7 +18,7 @@ const artistsSlice = createSlice({
   name: 'artists',
   initialState,
   reducers: {},
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(fetchArtists.pending, (state: State) => {
       state.artistsLoading = true;
     });

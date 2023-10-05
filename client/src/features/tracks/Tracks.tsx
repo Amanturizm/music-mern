@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { fetchTracks } from './TracksThunk';
@@ -15,10 +15,10 @@ const Tracks = () => {
   const { id } = useParams() as { id: string };
 
   const dispatch = useAppDispatch();
-  const { artists } = useAppSelector(state => state.artists);
-  const { currentAlbum } = useAppSelector(state => state.albums);
-  const { tracks, tracksLoading } = useAppSelector(state => state.tracks);
-  const { user } = useAppSelector(state => state.users);
+  const { artists } = useAppSelector((state) => state.artists);
+  const { currentAlbum } = useAppSelector((state) => state.albums);
+  const { tracks, tracksLoading } = useAppSelector((state) => state.tracks);
+  const { user } = useAppSelector((state) => state.users);
 
   const [currentArtist, setCurrentArtist] = useState<IArtist | null>(null);
 
@@ -37,64 +37,56 @@ const Tracks = () => {
 
   useEffect(() => {
     if (artists.length && currentAlbum) {
-      setCurrentArtist(artists.find(artist => artist._id === currentAlbum.artist._id) || null);
+      setCurrentArtist(artists.find((artist) => artist._id === currentAlbum.artist._id) || null);
     }
   }, [artists, currentAlbum]);
 
-  const imageUrl: string = (currentAlbum && currentAlbum.image) ?
-    apiUrl + currentAlbum.image : no_album_image;
+  const imageUrl: string =
+    currentAlbum && currentAlbum.image ? apiUrl + currentAlbum.image : no_album_image;
 
-  const isVisible = currentAlbum &&
-    (currentAlbum.isPublished || (user && (user.role === 'admin' || user._id === currentAlbum.user)));
+  const isVisible =
+    currentAlbum &&
+    (currentAlbum.isPublished ||
+      (user && (user.role === 'admin' || user._id === currentAlbum.user)));
 
-  return (currentAlbum && !isVisible) ? <Navigate to="/" /> : (
+  return currentAlbum && !isVisible ? (
+    <Navigate to="/" />
+  ) : (
     <>
       {tracksLoading && <LinearProgress color="inherit" />}
       <Box component="div" margin={13}>
-        { currentAlbum ?
-          <Box component="div"
-               display="flex"
-               alignItems="center"
-               gap={5}
-          >
-            <CardMedia
-              sx={{ height: 225, width: 225, borderRadius: 2 }}
-              image={imageUrl}
-            />
+        {currentAlbum ? (
+          <Box component="div" display="flex" alignItems="center" gap={5}>
+            <CardMedia sx={{ height: 225, width: 225, borderRadius: 2 }} image={imageUrl} />
             <Box>
               <Typography variant="h3" fontWeight="bold">
                 {currentAlbum.name}
               </Typography>
 
-              {
-                currentArtist ?
-                  <Box component="div" display="flex">
-                    <Typography variant="h5"
-                                marginLeft={.2}
-                                onClick={() => navigate('/artist/' + currentArtist._id)}
-                                sx={{ cursor: 'pointer', ':hover': { textDecoration: 'underline' } }}
-                    >
-                      {currentArtist.name}
-                    </Typography>
-                    <div></div>
-                  </Box> : <CircularProgress />
-              }
+              {currentArtist ? (
+                <Box component="div" display="flex">
+                  <Typography
+                    variant="h5"
+                    marginLeft={0.2}
+                    onClick={() => navigate('/artist/' + currentArtist._id)}
+                    sx={{ cursor: 'pointer', ':hover': { textDecoration: 'underline' } }}
+                  >
+                    {currentArtist.name}
+                  </Typography>
+                  <div></div>
+                </Box>
+              ) : (
+                <CircularProgress />
+              )}
             </Box>
-          </Box> : <CircularProgress size={100} />
-        }
-        <Grid container
-              flexDirection="column"
-              justifyContent="center"
-              marginY={5}
-        >
-          {
-            tracks.map(track =>
-              <Track
-                track={track}
-                key={track._id}
-              />
-            )
-          }
+          </Box>
+        ) : (
+          <CircularProgress size={100} />
+        )}
+        <Grid container flexDirection="column" justifyContent="center" marginY={5}>
+          {tracks.map((track) => (
+            <Track track={track} key={track._id} />
+          ))}
         </Grid>
         <Typography variant="h6" textAlign="center">
           {currentArtist?.info}

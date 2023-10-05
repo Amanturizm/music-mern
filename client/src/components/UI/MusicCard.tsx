@@ -37,21 +37,22 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
 
   const { id } = useParams() as { id: string };
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector(state => state.users);
+  const { user } = useAppSelector((state) => state.users);
   const itemName = artist ? 'artist' : 'album';
 
-  const imageUrl: string = (item && item.image) ? apiUrl + item.image : no_album_image;
+  const imageUrl: string = item && item.image ? apiUrl + item.image : no_album_image;
 
-  let image: React.ReactNode =
+  let image: React.ReactNode = (
     <CardMedia
       sx={{
         height: '100%',
         width: '100%',
         borderRadius: artist ? '50%' : 2,
-        bgcolor: '#333'
+        bgcolor: '#333',
       }}
       image={imageUrl}
-    />;
+    />
+  );
 
   if ((!item || !item.image) && artist) {
     image = <NoArtistSvg />;
@@ -64,11 +65,13 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
       if (artist) {
         await dispatch(deleteArtist(artist._id));
         await dispatch(fetchArtists());
-      } else {
-        await dispatch(deleteAlbum(album!._id));
+      } else if (album) {
+        await dispatch(deleteAlbum(album._id));
         await dispatch(fetchAlbums(id));
       }
-    } catch {}
+    } catch {
+      // nothing
+    }
   };
 
   const togglePublished = async (e: React.MouseEvent) => {
@@ -81,26 +84,31 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
       } else {
         await dispatch(fetchAlbums(id));
       }
-    } catch {}
+    } catch {
+      // nothing
+    }
   };
 
-  const isVisible = (item && (item.isPublished || (user && (user.role === 'admin' || user._id === item.user))));
+  const isVisible =
+    item && (item.isPublished || (user && (user.role === 'admin' || user._id === item.user)));
 
-  return (item && !isVisible) ? null : (
-    <CssGrid item
-             position="relative"
-             onClick={onClick}
-             width={artist ? 180 : 200}
-             height={artist ? 210 : 240}
-             padding={artist ? 1 : 2}
-             paddingBottom={1}
+  return item && !isVisible ? null : (
+    <CssGrid
+      item
+      position="relative"
+      onClick={onClick}
+      width={artist ? 180 : 200}
+      height={artist ? 210 : 240}
+      padding={artist ? 1 : 2}
+      paddingBottom={1}
     >
-      <Box component="div"
-           width={160}
-           height={160}
-           margin="0 auto 10px auto"
-           borderRadius={artist ? '50%' : 2}
-           boxShadow="0 8px 24px rgba(0,0,0,.5)"
+      <Box
+        component="div"
+        width={160}
+        height={160}
+        margin="0 auto 10px auto"
+        borderRadius={artist ? '50%' : 2}
+        boxShadow="0 8px 24px rgba(0,0,0,.5)"
       >
         {image}
       </Box>
@@ -115,27 +123,19 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
       >
         {item?.name}
       </Typography>
-      {
-        album ?
-          <Box component="div"
-               display="flex"
-               justifyContent="space-between"
-               alignItems="center"
-          >
-            <Typography variant="subtitle1" textAlign="center">
-              {album.date}
-            </Typography>
+      {album ? (
+        <Box component="div" display="flex" justifyContent="space-between" alignItems="center">
+          <Typography variant="subtitle1" textAlign="center">
+            {album.date}
+          </Typography>
 
-            <Typography variant="subtitle1"
-                        display="flex"
-                        alignItems="center"
-            >
-              <MusicNote fontSize="small" />{album.amount}
-            </Typography>
-          </Box> : null
-      }
-      {
-        (user && (user.role === 'admin' || user._id === item?.user)) &&
+          <Typography variant="subtitle1" display="flex" alignItems="center">
+            <MusicNote fontSize="small" />
+            {album.amount}
+          </Typography>
+        </Box>
+      ) : null}
+      {user && (user.role === 'admin' || user._id === item?.user) && (
         <DeleteIcon
           sx={{
             position: 'absolute',
@@ -143,14 +143,13 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
             top: 8,
             zIndex: 2,
             ':hover': {
-              transform: 'scale(1.2)'
-            }
+              transform: 'scale(1.2)',
+            },
           }}
           onClick={deleteItem}
         />
-      }
-      {
-        (!item?.isPublished && (user && (user.role === 'admin' || user._id === item?.user))) &&
+      )}
+      {!item?.isPublished && user && (user.role === 'admin' || user._id === item?.user) && (
         <UnpublishedIcon
           sx={{
             position: 'absolute',
@@ -158,12 +157,12 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
             top: 8,
             zIndex: 2,
             ':hover': {
-              transform: 'scale(1.2)'
-            }
-        }}
+              transform: 'scale(1.2)',
+            },
+          }}
           onClick={togglePublished}
         />
-      }
+      )}
     </CssGrid>
   );
 };

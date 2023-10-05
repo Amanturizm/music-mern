@@ -16,7 +16,7 @@ const CssBox = styled(Box)({
   ':hover': {
     backgroundColor: '#181818',
     transition: 'all .3s ease',
-  }
+  },
 });
 
 interface Props {
@@ -25,7 +25,7 @@ interface Props {
 
 const Track: React.FC<Props> = ({ track }) => {
   const dispatch = useAppDispatch();
-  const { currentPlayTrack } = useAppSelector(state => state.tracks);
+  const { currentPlayTrack } = useAppSelector((state) => state.tracks);
   const isPLay: boolean = currentPlayTrack?._id === track._id;
 
   const [isHover, setIsHover] = useState<boolean>(false);
@@ -37,44 +37,41 @@ const Track: React.FC<Props> = ({ track }) => {
         await dispatch(postTrackHistory(track._id));
       }
       dispatch(changeCurrentPlayTrack(track));
-    } catch {}
+    } catch {
+      // nothing
+    }
   };
 
   return (
-    <CssBox component="div"
-            sx={{ bgcolor: isPLay ? '#181818' : 'transparent' }}
-            onMouseOver={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
+    <CssBox
+      component="div"
+      sx={{ bgcolor: isPLay ? '#181818' : 'transparent' }}
+      onMouseOver={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
-      <Box component="div"
-           display="flex"
-           gap={4}
-      >
-        <Typography variant="h6"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    minWidth={30}
-                    maxHeight={30}
-                    sx={{
-                      cursor: 'pointer',
-                      transform: `scale(${(isHover || isPLay) && (isHoverOnPlay ? 1.4 : 1.2)})`,
-                    }}
-                    onMouseOver={() => setIsHoverOnPlay(true)}
-                    onMouseLeave={() => setIsHoverOnPlay(false)}
-                    onClick={clickPlay}
+      <Box component="div" display="flex" gap={4}>
+        <Typography
+          variant="h6"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minWidth={30}
+          maxHeight={30}
+          sx={{
+            cursor: 'pointer',
+            transform: `scale(${(isHover || isPLay) && (isHoverOnPlay ? 1.4 : 1.2)})`,
+          }}
+          onMouseOver={() => setIsHoverOnPlay(true)}
+          onMouseLeave={() => setIsHoverOnPlay(false)}
+          onClick={clickPlay}
         >
-          { isHover || isPLay ? (isPLay ? <PauseIcon /> : <PlayArrowIcon />) : track.number }
+          {isHover || isPLay ? isPLay ? <PauseIcon /> : <PlayArrowIcon /> : track.number}
         </Typography>
 
-        <Typography variant="h6">
-          {track.name}
-        </Typography>
+        <Typography variant="h6">{track.name}</Typography>
       </Box>
 
-      <Typography variant="h6">
-        {track.duration}
-      </Typography>
+      <Typography variant="h6">{track.duration}</Typography>
     </CssBox>
   );
 };

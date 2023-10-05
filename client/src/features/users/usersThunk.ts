@@ -16,7 +16,7 @@ export const register = createAsyncThunk<IUser, TUserRegister, { rejectValue: IV
 
       throw e;
     }
-  }
+  },
 );
 
 export const login = createAsyncThunk<IUser, TUserRegister, { rejectValue: IValidationError }>(
@@ -32,7 +32,7 @@ export const login = createAsyncThunk<IUser, TUserRegister, { rejectValue: IVali
 
       throw e;
     }
-  }
+  },
 );
 
 export const googleLogin = createAsyncThunk<IUser, string, { rejectValue: IValidationError }>(

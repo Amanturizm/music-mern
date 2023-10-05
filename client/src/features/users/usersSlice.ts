@@ -20,9 +20,9 @@ export const usersSlice = createSlice({
   reducers: {
     clearUser: (state: State) => {
       state.user = null;
-    }
+    },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(register.pending, (state) => {
       state.registerLoading = true;
       state.registerError = null;
@@ -60,7 +60,7 @@ export const usersSlice = createSlice({
       state.registerLoading = false;
       state.registerError = error || null;
     });
-  }
+  },
 });
 
 export const usersReducer = usersSlice.reducer;

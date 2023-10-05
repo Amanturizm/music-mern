@@ -11,7 +11,7 @@ import {
   Link,
   styled,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import { TUserRegister } from '../../types';
@@ -31,7 +31,7 @@ const initialState: TUserRegister = {
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  const { registerLoading, registerError } = useAppSelector(state => state.users);
+  const { registerLoading, registerError } = useAppSelector((state) => state.users);
 
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ const Login = () => {
   const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setState(prevState => ({ ...prevState, [name]: value }));
+    setState((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const sendData = async (e: React.FormEvent) => {
@@ -49,7 +49,9 @@ const Login = () => {
     try {
       await dispatch(login(state)).unwrap();
       navigate('/');
-    } catch {}
+    } catch {
+      // nothing
+    }
   };
 
   const googleLoginHandler = async (credential: string) => {
@@ -66,7 +68,7 @@ const Login = () => {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOpenOutlinedIcon />
         </Avatar>
 
@@ -89,11 +91,11 @@ const Login = () => {
 
         {registerError && (
           <Alert severity="error" sx={{ mt: 2, width: '100%' }}>
-            { registerError.error }
+            {registerError.error}
           </Alert>
         )}
 
-        <Box component="form" onSubmit={sendData} sx={{mt: 3}}>
+        <Box component="form" onSubmit={sendData} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -131,17 +133,17 @@ const Login = () => {
               ':disabled': {
                 pointerEvents: 'auto',
                 cursor: 'not-allowed',
-              }
-          }}
+              },
+            }}
             disabled={registerLoading}
           >
-            {registerLoading ? <CircularProgress size={25} /> : ('Sign In')}
+            {registerLoading ? <CircularProgress size={25} /> : 'Sign In'}
           </Button>
 
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link component={RouterLink} fontSize="JetBrains Mono" to="/signup" variant="body2">
-                Don't have an account? Sign up
+                Don&apos;t have an account? Sign up
               </Link>
             </Grid>
           </Grid>

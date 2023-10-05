@@ -20,8 +20,8 @@ const initialState: ITrackForm = {
 const TracksForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { artists } = useAppSelector(state => state.artists);
-  const { albums } = useAppSelector(state => state.albums);
+  const { artists } = useAppSelector((state) => state.artists);
+  const { albums } = useAppSelector((state) => state.albums);
 
   const [state, setState] = useState<ITrackForm>(initialState);
   const [selectedArtist, setSelectedArtist] = useState<string>('');
@@ -31,10 +31,12 @@ const TracksForm = () => {
     dispatch(fetchAlbums());
   }, [dispatch]);
 
-  const changeValue = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
+  const changeValue = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent,
+  ) => {
     const { name, value } = e.target;
 
-    setState(prevState => ({ ...prevState, [name]: value }));
+    setState((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const sendData = async (e: React.FormEvent) => {
@@ -43,17 +45,20 @@ const TracksForm = () => {
     try {
       await dispatch(createTrack(state));
       navigate('/');
-    } catch {}
+    } catch {
+      // nothing
+    }
   };
 
   return (
-    <Box component="form"
-         width="60%"
-         margin="10% auto"
-         display="flex"
-         flexDirection="column"
-         gap={2}
-         onSubmit={sendData}
+    <Box
+      component="form"
+      width="60%"
+      margin="10% auto"
+      display="flex"
+      flexDirection="column"
+      gap={2}
+      onSubmit={sendData}
     >
       <TextField
         sx={{ width: '100%' }}
@@ -99,24 +104,21 @@ const TracksForm = () => {
         value={selectedArtist}
         onChange={(e) => setSelectedArtist(e.target.value)}
       >
-        {
-          artists.map(artist => (
-            <MenuItem value={artist._id} key={artist._id}>{artist.name}</MenuItem>
-          ))
-        }
+        {artists.map((artist) => (
+          <MenuItem value={artist._id} key={artist._id}>
+            {artist.name}
+          </MenuItem>
+        ))}
       </Select>
 
-      <Select
-        required
-        name="album"
-        value={state.album}
-        onChange={changeValue}
-      >
-        {
-          albums.map(album => selectedArtist === album.artist ? (
-            <MenuItem value={album._id} key={album._id}>{album.name}</MenuItem>
-          ) : null)
-        }
+      <Select required name="album" value={state.album} onChange={changeValue}>
+        {albums.map((album) =>
+          selectedArtist === album.artist ? (
+            <MenuItem value={album._id} key={album._id}>
+              {album.name}
+            </MenuItem>
+          ) : null,
+        )}
       </Select>
 
       <LoadingButton
@@ -125,7 +127,7 @@ const TracksForm = () => {
           ':disabled': {
             pointerEvents: 'auto',
             cursor: 'not-allowed',
-          }
+          },
         }}
         type="submit"
         endIcon={<SendIcon />}

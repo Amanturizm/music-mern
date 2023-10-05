@@ -16,7 +16,7 @@ const trackHistorySlice = createSlice({
   name: 'track_history',
   initialState,
   reducers: {},
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(fetchTrackHistory.pending, (state: State) => {
       state.trackHistoryLoading = true;
     });
