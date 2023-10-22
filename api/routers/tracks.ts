@@ -1,11 +1,10 @@
 import express from 'express';
-import Track from '../models/Track';
-import { IAlbum, IAlbumMutation, ITrack } from '../types';
-import Album from '../models/Album';
-import album from '../models/Album';
+import mongoose, { HydratedDocument } from 'mongoose';
 import auth, { RequestWithUser } from '../middleware/auth';
 import permit from '../middleware/permit';
-import mongoose, { HydratedDocument } from 'mongoose';
+import Album from '../models/Album';
+import Track from '../models/Track';
+import { IAlbum, ITrack } from '../types';
 
 const tracksRouter = express.Router();
 
@@ -25,7 +24,7 @@ tracksRouter.get('/', auth, async (req, res) => {
 
 tracksRouter.get('/:id', async (req, res) => {
   try {
-    const albums = (await Album.find({ artist: req.params.id })) as IAlbumMutation[];
+    const albums = (await Album.find({ artist: req.params.id })) as IAlbum[];
 
     const artistTracks: ITrack[] = [];
 
@@ -52,16 +51,14 @@ tracksRouter.post('/', auth, async (req, res) => {
   try {
     const user = (req as RequestWithUser).user;
 
-    const trackAssembly: ITrack = {
-      name: req.body.name,
-      album: req.body.album,
-      number: req.body.number,
-      duration: req.body.duration,
-      youtube: req.body.youtube,
+    const track = new Track({
       user: user._id,
-    };
-
-    const track = new Track(trackAssembly);
+      album: req.body.album,
+      name: req.body.name,
+      duration: req.body.duration,
+      number: req.body.number,
+      youtube: req.body.youtube,
+    });
 
     await track.save();
     return res.send(track);
@@ -70,7 +67,7 @@ tracksRouter.post('/', auth, async (req, res) => {
   }
 });
 
-tracksRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, next) => {
+tracksRouter.delete('/:id', auth, async (req, res, next) => {
   try {
     const user = (req as RequestWithUser).user;
 
@@ -84,11 +81,12 @@ tracksRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, next
       return res.status(401).send({ error: "Don't have enough rights!" });
     }
 
-    if (track.isPublished) {
+    if (user.role !== 'admin' && track.isPublished) {
       return res.status(400).send({ error: 'Track published!' });
     }
 
     await track.deleteOne();
+
     return res.send({ message: 'Track deleted!' });
   } catch (e) {
     if (e instanceof mongoose.Error.ValidationError) {

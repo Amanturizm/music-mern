@@ -1,10 +1,12 @@
 import express from 'express';
-import Artist from '../models/Artist';
-import { IArtist } from '../types';
-import { imagesUpload } from '../multer';
+import mongoose, { HydratedDocument } from 'mongoose';
 import auth, { RequestWithUser } from '../middleware/auth';
 import permit from '../middleware/permit';
-import { HydratedDocument, Types } from 'mongoose';
+import { imagesUpload } from '../multer';
+import Artist from '../models/Artist';
+import Album from '../models/Album';
+import Track from '../models/Track';
+import { IAlbum, IArtist } from '../types';
 
 const artistsRouter = express.Router();
 
@@ -21,14 +23,12 @@ artistsRouter.post('/', auth, imagesUpload.single('image'), async (req, res) => 
   try {
     const user = (req as RequestWithUser).user;
 
-    const artistAssembly: IArtist = {
-      name: req.body.name,
-      info: req.body.info || null,
-      image: req.file ? 'images/' + req.file.filename : null,
+    const artist = new Artist({
       user: user._id,
-    };
-
-    const artist = new Artist(artistAssembly);
+      name: req.body.name,
+      info: req.body.info,
+      image: req.file ? 'images/' + req.file.filename : null,
+    });
 
     await artist.save();
     return res.send(artist);
@@ -37,11 +37,13 @@ artistsRouter.post('/', auth, imagesUpload.single('image'), async (req, res) => 
   }
 });
 
-artistsRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, next) => {
+artistsRouter.delete('/:id', auth, async (req, res, next) => {
   try {
     const user = (req as RequestWithUser).user;
 
-    const artist = (await Artist.findById(req.params.id)) as HydratedDocument<IArtist>;
+    const _id = req.params.id;
+
+    const artist = (await Artist.findById(_id)) as HydratedDocument<IArtist>;
 
     if (!artist) {
       return res.status(404).send({ error: 'Artist not found!' });
@@ -55,9 +57,20 @@ artistsRouter.delete('/:id', auth, permit('admin', 'user'), async (req, res, nex
       return res.status(400).send({ error: 'Artist published!' });
     }
 
+    const albums = (await Album.find({ artist: _id })) as HydratedDocument<IAlbum[]>;
+
+    await Promise.all(albums.map(async ({ _id }) => await Track.deleteMany({ album: _id })));
+
+    await Album.deleteMany({ artist: _id });
+
     await artist.deleteOne();
+
     return res.send({ message: 'Artist deleted!' });
   } catch (e) {
+    if (e instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(e);
+    }
+
     return next(e);
   }
 });

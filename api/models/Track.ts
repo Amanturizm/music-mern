@@ -1,24 +1,31 @@
-import mongoose, { Types } from 'mongoose';
-import Artist from './Artist';
+import mongoose, { Schema } from 'mongoose';
 import Album from './Album';
 import User from './User';
-
-const Schema = mongoose.Schema;
+import { TObjectId } from '../types';
 
 const TrackSchema = new Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    validate: {
+      validator: async (value: TObjectId) => User.findById(value),
+      message: 'User does not exist!',
+    },
+  },
+  album: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Album',
+    required: true,
+    validate: {
+      validator: async (value: TObjectId) => Album.findById(value),
+      message: 'Album does not exist!',
+    },
+  },
   name: {
     type: String,
     required: true,
     unique: true,
-  },
-  album: {
-    type: Schema.Types.ObjectId,
-    ref: 'Album',
-    required: true,
-    validate: {
-      validator: async (value: Types.ObjectId) => Album.findById(value),
-      message: 'Album does not exist!',
-    },
   },
   duration: {
     type: String,
@@ -32,15 +39,6 @@ const TrackSchema = new Schema({
   isPublished: {
     type: Boolean,
     default: false,
-  },
-  user: {
-    type: Types.ObjectId,
-    ref: 'User',
-    required: true,
-    validate: {
-      validator: async (value: Types.ObjectId) => User.findById(value),
-      message: 'User does not exist!',
-    },
   },
 });
 

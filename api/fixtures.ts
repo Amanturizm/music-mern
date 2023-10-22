@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { randomUUID } from 'crypto';
 import config from './config';
 import Artist from './models/Artist';
 import Album from './models/Album';
@@ -10,49 +11,42 @@ import User from './models/User';
   const db = mongoose.connection;
 
   try {
-    await db.dropCollection('albums');
+    await db.dropCollection('users');
     await db.dropCollection('artists');
+    await db.dropCollection('albums');
     await db.dropCollection('tracks');
     await db.dropCollection('trackhistories');
-    await db.dropCollection('users');
   } catch (e) {
     console.log('Collections were not present, skipping drop...');
   }
 
-  const [user_1, user_2, admin_1] = await User.create(
+  const [user_1, user_2] = await User.create(
     {
       displayName: 'Himer Rokovoy',
       username: 'Okabe Rintarou',
       password: 'el.psy.congroo',
-      token: crypto.randomUUID(),
+      token: randomUUID(),
     },
     {
       displayName: 'Kurisutiiina',
       username: 'Kurisu Makise',
       password: 'iwantmyownspoon',
-      token: crypto.randomUUID(),
+      token: randomUUID(),
     },
     {
       username: 'admin',
       password: 'admin',
-      token: crypto.randomUUID(),
+      token: randomUUID(),
       role: 'admin',
     },
   );
 
-  const [Oxxxymiron, R1Fmabes, MC_No_Limit, Diktator_UAV, KnownAim, Booker, JesusAVGN, Abbalbisk] =
+  const [Oxxxymiron, MC_No_Limit, Diktator_UAV, KnownAim, Booker, JesusAVGN, Abbalbisk] =
     await Artist.create(
       {
         name: 'Oxxxymiron',
         image: 'fixtures/oxxxymiron.jpg',
         info: 'Russian rap artist, songwriter and public figure.',
-        user: user_1._id,
-        isPublished: true,
-      },
-      {
-        name: 'R1Fmabes',
-        image: 'fixtures/r1fmabes.png',
-        info: 'Battle rapper from Kaluga, champion Break on Bits (season 1), participant of SLOVO: Moscow, organizer and participant of the Kaluga battle site More Than Battle (BCHB).',
         user: user_1._id,
         isPublished: true,
       },
@@ -96,6 +90,13 @@ import User from './models/User';
         image: 'fixtures/abbalbisk.png',
         info: 'Abbalbisk (Sergey Vladimirovich Starikov) is a battle rapper from St. Petersburg, champion of SLOVO: Saint-Petersburg (season 2), champion of the Versus Team+Up team season (together with XXOS), quarter-finalist of RBL (season 3).',
         user: user_1._id,
+      },
+      {
+        name: 'R1Fmabes',
+        image: 'fixtures/r1fmabes.png',
+        info: 'Battle rapper from Kaluga, champion Break on Bits (season 1), participant of SLOVO: Moscow, organizer and participant of the Kaluga battle site More Than Battle (BCHB).',
+        user: user_1._id,
+        isPublished: true,
       },
     );
 

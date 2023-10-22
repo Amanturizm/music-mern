@@ -1,19 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import User from '../models/User';
-import {
-  IAlbum,
-  IAlbumMutation,
-  ITrack,
-  ITrackHistory,
-  ITrackHistoryMutation,
-  ITrackMutation,
-  IUser,
-} from '../types';
-import Track_history from '../models/Track_history';
 import auth, { RequestWithUser } from '../middleware/auth';
-import Track from '../models/Track';
 import Album from '../models/Album';
+import Track from '../models/Track';
+import Track_history from '../models/Track_history';
+import { IAlbumMutation, ITrackHistoryMutation, ITrackHistorySuper } from '../types';
 
 const trackHistoryRouter = express.Router();
 
@@ -23,13 +14,13 @@ trackHistoryRouter.get('/', auth, async (req, res, next) => {
 
     const track_history = (await Track_history.find({ user: user._id })
       .sort({ datetime: -1 })
-      .populate('track', 'name album')) as ITrackHistory[];
+      .populate('track', 'user album name')) as ITrackHistoryMutation[];
 
-    const newTrackHistory: Awaited<ITrackHistoryMutation>[] = await Promise.all(
+    const newTrackHistory: Awaited<ITrackHistorySuper>[] = await Promise.all(
       track_history.map(async ({ _id, user, track, datetime }) => {
         const album = (await Album.findOne({ _id: track.album }).populate(
           'artist',
-          'name user',
+          'user name',
         )) as IAlbumMutation;
 
         return {
@@ -37,16 +28,16 @@ trackHistoryRouter.get('/', auth, async (req, res, next) => {
           user,
           datetime,
           track: {
-            name: track.name,
             user: track.user,
+            name: track.name,
             album: {
               _id: album._id,
-              image: album.image,
               user: album.user,
+              image: album.image,
               artist: {
                 _id: album.artist._id,
-                name: album.artist.name,
                 user: album.artist.user,
+                name: album.artist.name,
               },
             },
           },
@@ -68,9 +59,15 @@ trackHistoryRouter.post('/', auth, async (req, res, next) => {
   try {
     const user = (req as RequestWithUser).user;
 
+    const track = await Track.findById(req.body.track);
+
+    if (!track) {
+      return res.status(404).send({ error: 'Track not found!' });
+    }
+
     const track_history = new Track_history({
       user: user._id,
-      track: req.body.track,
+      track: track._id,
       datetime: new Date().toISOString(),
     });
 
@@ -78,9 +75,6 @@ trackHistoryRouter.post('/', auth, async (req, res, next) => {
     return res.send(track_history);
   } catch (e) {
     if (e instanceof mongoose.Error.ValidationError) {
-      if (e.errors.track) {
-        return res.status(404).send({ error: 'Track not found!' });
-      }
       return res.status(400).send(e);
     }
 

@@ -1,23 +1,31 @@
-import mongoose, { Types } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import Artist from './Artist';
 import User from './User';
-
-const Schema = mongoose.Schema;
+import { TObjectId } from '../types';
 
 const AlbumSchema = new Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    validate: {
+      validator: async (value: TObjectId) => User.findById(value),
+      message: 'User does not exist!',
+    },
+  },
+  artist: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Artist',
+    required: true,
+    validate: {
+      validator: async (value: TObjectId) => Artist.findById(value),
+      message: 'Artist does not exist!',
+    },
+  },
   name: {
     type: String,
     required: true,
     unique: true,
-  },
-  artist: {
-    type: Schema.Types.ObjectId,
-    ref: 'Artist',
-    required: true,
-    validate: {
-      validator: async (value: Types.ObjectId) => Artist.findById(value),
-      message: 'Artist does not exist!',
-    },
   },
   date: {
     type: Number,
@@ -27,15 +35,6 @@ const AlbumSchema = new Schema({
   isPublished: {
     type: Boolean,
     default: false,
-  },
-  user: {
-    type: Types.ObjectId,
-    ref: 'User',
-    required: true,
-    validate: {
-      validator: async (value: Types.ObjectId) => User.findById(value),
-      message: 'User does not exist!',
-    },
   },
 });
 

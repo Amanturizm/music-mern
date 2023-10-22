@@ -1,11 +1,12 @@
 import express from 'express';
 import mongoose, { HydratedDocument } from 'mongoose';
 import bcrypt from 'bcrypt';
-import User, { IUserMethods } from '../models/User';
-import auth, { RequestWithUser } from '../middleware/auth';
+import { randomUUID } from 'crypto';
 import { OAuth2Client } from 'google-auth-library';
-import config from '../config';
 import { imagesUpload } from '../multer';
+import auth, { RequestWithUser } from '../middleware/auth';
+import config from '../config';
+import User, { IUserMethods } from '../models/User';
 
 const usersRouter = express.Router();
 
@@ -101,7 +102,7 @@ usersRouter.post('/google', async (req, res, next) => {
     if (!user) {
       user = new User({
         username: email,
-        password: crypto.randomUUID(),
+        password: randomUUID(),
         displayName,
         avatar,
         googleID: id,

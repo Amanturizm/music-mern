@@ -1,7 +1,7 @@
-import { HydratedDocument, Model, model, Schema } from 'mongoose';
+import mongoose, { HydratedDocument, Model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
-import { IUser } from '../types';
 import { randomUUID } from 'crypto';
+import { IUser } from '../types';
 
 const SALT_WORK_FACTORS = 10;
 
@@ -9,7 +9,7 @@ export interface IUserMethods extends IUser {
   generateToken(): void;
 }
 
-type UserModel = Model<IUser, {}, IUserMethods>;
+type UserModel = Model<IUser, object, IUserMethods>;
 
 const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
   username: {
@@ -23,7 +23,7 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
       ): Promise<boolean> {
         if (!this.isModified('username')) return true;
         const user: HydratedDocument<IUser> | null = await User.findOne({ username });
-        return !Boolean(user);
+        return !user;
       },
       message: 'This user is already registered',
     },
@@ -42,7 +42,10 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
     default: 'user',
     enum: ['user', 'admin'],
   },
-  displayName: String,
+  displayName: {
+    type: String,
+    required: true,
+  },
   avatar: String,
   googleID: String,
 });
@@ -56,7 +59,7 @@ UserSchema.pre('save', async function (next) {
 });
 
 UserSchema.set('toJSON', {
-  transform: (doc, ret, options) => {
+  transform: (doc, ret) => {
     delete ret.password;
 
     return ret;
@@ -67,6 +70,6 @@ UserSchema.methods.generateToken = function () {
   this.token = randomUUID();
 };
 
-const User = model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 export default User;

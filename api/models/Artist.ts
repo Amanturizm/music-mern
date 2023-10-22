@@ -1,7 +1,17 @@
-import mongoose, { Types } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import User from './User';
+import { TObjectId } from '../types';
 
-const ArtistSchema = new mongoose.Schema({
+const ArtistSchema = new Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    validate: {
+      validator: async (value: TObjectId) => User.findById(value),
+      message: 'User does not exist!',
+    },
+  },
   name: {
     type: String,
     required: true,
@@ -13,15 +23,6 @@ const ArtistSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
     default: false,
-  },
-  user: {
-    type: Types.ObjectId,
-    ref: 'User',
-    required: true,
-    validate: {
-      validator: async (value: Types.ObjectId) => User.findById(value),
-      message: 'User does not exist!',
-    },
   },
 });
 

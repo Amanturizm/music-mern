@@ -1,72 +1,77 @@
-import { Types } from 'mongoose';
+import mongoose from 'mongoose';
 
-export interface IArtist {
-  name: string;
-  image?: string | null;
-  info?: string | null;
-  isPublished?: boolean;
-  user: Types.ObjectId;
-}
-
-export interface IArtistMutation extends IArtist {
-  _id: Types.ObjectId;
-}
-
-export interface IAlbum {
-  name?: string;
-  artist: IArtistMutation;
-  date?: Date;
-  image?: string | null;
-  amount?: number;
-  isPublished?: boolean;
-  user: Types.ObjectId;
-}
-
-export interface IAlbumMutation extends IAlbum {
-  _id: Types.ObjectId;
-}
-
-export interface ITrack {
-  name: string;
-  album: string;
-  number: number;
-  duration: string;
-  youtube: string;
-  isPublished?: boolean;
-  user: Types.ObjectId;
-}
+export type TObjectId = mongoose.Schema.Types.ObjectId;
 
 export interface IUser {
+  _id: TObjectId;
   username: string;
   password: string;
   token: string;
   role: string;
-  displayName?: string;
-  avatar?: string | null;
+  displayName: string;
+  avatar: string | null;
   googleID?: string;
 }
 
-export interface ITrackMutation {
-  _id: Types.ObjectId;
+export interface IArtist {
+  _id: TObjectId;
+  user: TObjectId;
   name: string;
-  album: IAlbumMutation;
+  info: string | null;
+  image: string | null;
+  isPublished: boolean;
+}
+
+export interface IAlbum {
+  _id: TObjectId;
+  user: TObjectId;
+  artist: TObjectId;
+  name: string;
+  date: Date;
+  image: string | null;
+  amount?: number;
+  isPublished: boolean;
+}
+
+export interface IAlbumMutation extends Omit<IAlbum, 'artist'> {
+  artist: { _id: TObjectId; user: TObjectId; name: string };
+}
+
+export interface ITrack {
+  _id: TObjectId;
+  user: TObjectId;
+  album: TObjectId;
+  name: string;
+  duration: string;
+  number: number;
   youtube: string;
-  number?: number;
-  duration?: string;
-  isPublished?: boolean;
-  user?: Types.ObjectId;
+  isPublished: boolean;
 }
 
 export interface ITrackHistory {
-  _id: Types.ObjectId;
-  user: Types.ObjectId;
-  track: ITrackMutation;
+  _id: TObjectId;
+  user: TObjectId;
+  track: TObjectId;
   datetime: Date;
 }
 
-export interface ITrackHistoryMutation {
-  _id: Types.ObjectId;
-  user: Types.ObjectId;
-  track: { name: string; album: IAlbumMutation };
-  datetime: Date;
+export interface ITrackHistoryMutation extends Omit<ITrackHistory, 'track'> {
+  track: { _id: TObjectId; user: TObjectId; album: string; name: string };
+}
+
+export interface ITrackHistorySuper extends Omit<ITrackHistory, 'track'> {
+  track: {
+    user: TObjectId;
+    name: string;
+    album: {
+      _id: TObjectId;
+      user: TObjectId;
+      image: string | null;
+      artist: {
+        _id: TObjectId;
+        user: TObjectId;
+        name: string;
+      };
+    };
+  };
 }
