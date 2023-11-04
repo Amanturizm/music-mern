@@ -34,6 +34,7 @@ import User from './models/User';
       token: randomUUID(),
     },
     {
+      displayName: 'admin',
       username: 'admin',
       password: 'admin',
       token: randomUUID(),

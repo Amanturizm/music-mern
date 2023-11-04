@@ -49,7 +49,7 @@ const AppToolbar = () => {
       <Toolbar sx={{ bgcolor: '#121212' }}>
         <Typography variant="h5" component="div" sx={{ flexGrow: 1, letterSpacing: 1 }}>
           <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>
-            GazGolder
+            Green Park
           </Link>
         </Typography>
 

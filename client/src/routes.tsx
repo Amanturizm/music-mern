@@ -13,6 +13,7 @@ const useRoutes = (isAuthenticated: boolean) => (
   <Routes>
     <Route path="/" element={<Artists />} />
     <Route path="/artist/:id" element={<Albums />} />
+    <Route path="/album/:id" element={<Tracks />} />
     {!isAuthenticated ? (
       <>
         <Route path="/signup" element={<Signup />} />
@@ -21,7 +22,6 @@ const useRoutes = (isAuthenticated: boolean) => (
       </>
     ) : (
       <>
-        <Route path="/album/:id" element={<Tracks />} />
         <Route path="/track_history" element={<TrackHistory />} />
         <Route path="/add-artist" element={<ArtistsForm />} />
         <Route path="/add-album" element={<AlbumsForm />} />

@@ -25,7 +25,6 @@ const TrackSchema = new Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
   },
   duration: {
     type: String,
@@ -35,7 +34,10 @@ const TrackSchema = new Schema({
     type: Number,
     required: true,
   },
-  youtube: String,
+  youtube: {
+    type: String,
+    required: true,
+  },
   isPublished: {
     type: Boolean,
     default: false,

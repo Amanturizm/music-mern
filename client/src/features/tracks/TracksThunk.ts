@@ -11,3 +11,7 @@ export const fetchTracks = createAsyncThunk<ITrack[], string>('tracks/fetchAll',
 export const createTrack = createAsyncThunk<void, ITrackForm>('tracks/createOne', async (track) => {
   await axiosApi.post('/tracks', track);
 });
+
+export const deleteTrack = createAsyncThunk<void, string>('tracks/deleteOne', async (id) => {
+  await axiosApi.delete('/tracks/' + id);
+});

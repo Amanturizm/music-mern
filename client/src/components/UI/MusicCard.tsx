@@ -1,7 +1,5 @@
 import React from 'react';
 import { Box, CardMedia, Grid, styled, Typography } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import UnpublishedIcon from '@mui/icons-material/Unpublished';
 import { MusicNote } from '@mui/icons-material';
 import { apiUrl } from '../../constants';
 import { IAlbum, IArtist } from '../../types';
@@ -12,6 +10,7 @@ import axiosApi from '../../axiosApi';
 import { deleteArtist, fetchArtists } from '../../features/artists/ArtistsThunk';
 import { deleteAlbum, fetchAlbums } from '../../features/albums/AlbumsThunk';
 import { useParams } from 'react-router-dom';
+import MusicMenu from './MusicMenu';
 
 const CssGrid = styled(Grid)({
   display: 'flex',
@@ -62,12 +61,14 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
     e.stopPropagation();
 
     try {
-      if (artist) {
-        await dispatch(deleteArtist(artist._id));
-        await dispatch(fetchArtists());
-      } else if (album) {
-        await dispatch(deleteAlbum(album._id));
-        await dispatch(fetchAlbums(id));
+      if (confirm('Are you sure you want to delete?')) {
+        if (artist) {
+          await dispatch(deleteArtist(artist._id)).unwrap();
+          await dispatch(fetchArtists()).unwrap();
+        } else if (album) {
+          await dispatch(deleteAlbum(album._id)).unwrap();
+          await dispatch(fetchAlbums(id)).unwrap();
+        }
       }
     } catch {
       // nothing
@@ -80,9 +81,9 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
     try {
       await axiosApi.patch(`${itemName}s/${item?._id}/togglePublished`);
       if (artist) {
-        await dispatch(fetchArtists());
+        await dispatch(fetchArtists()).unwrap();
       } else {
-        await dispatch(fetchAlbums(id));
+        await dispatch(fetchAlbums(id)).unwrap();
       }
     } catch {
       // nothing
@@ -136,31 +137,14 @@ const MusicCard: React.FC<Props> = ({ artist, album, onClick }) => {
         </Box>
       ) : null}
       {user && (user.role === 'admin' || user._id === item?.user) && (
-        <DeleteIcon
-          sx={{
-            position: 'absolute',
-            left: 8,
-            top: 8,
-            zIndex: 2,
-            ':hover': {
-              transform: 'scale(1.2)',
-            },
-          }}
-          onClick={deleteItem}
-        />
-      )}
-      {!item?.isPublished && user && (user.role === 'admin' || user._id === item?.user) && (
-        <UnpublishedIcon
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            zIndex: 2,
-            ':hover': {
-              transform: 'scale(1.2)',
-            },
-          }}
-          onClick={togglePublished}
+        <MusicMenu
+          deleteVisible
+          publishVisible={user.role === 'admin'}
+          isPublish={item?.isPublished}
+          deleteClick={deleteItem}
+          publishClick={togglePublished}
+          hideClick={togglePublished}
+          sx={{ position: 'absolute', top: 2.5, right: 2.5 }}
         />
       )}
     </CssGrid>

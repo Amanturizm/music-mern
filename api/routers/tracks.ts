@@ -8,7 +8,7 @@ import { IAlbum, ITrack } from '../types';
 
 const tracksRouter = express.Router();
 
-tracksRouter.get('/', auth, async (req, res) => {
+tracksRouter.get('/', async (req, res) => {
   try {
     if (req.query.album) {
       const currentAlbumTracks = await Track.find({ album: req.query.album }).sort({ number: 1 });

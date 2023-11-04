@@ -10,6 +10,7 @@ import {
   Menu,
   MenuItem,
   Tooltip,
+  Typography,
 } from '@mui/material';
 import { Logout } from '@mui/icons-material';
 import { IUserForUsing } from '../types';
@@ -102,8 +103,16 @@ const ToolbarMenu: React.FC<Props> = ({ user, onTrackHistory, onLogout }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose} sx={{ width: 200 }}>
-          <Avatar src={avatar} /> {user.displayName || user.username}
+        <MenuItem onClick={handleClose}>
+          <Avatar src={avatar} />
+          <Typography
+            sx={{ width: 125 }}
+            whiteSpace="nowrap"
+            overflow="hidden"
+            textOverflow="ellipsis"
+          >
+            {user.displayName || user.username}
+          </Typography>
         </MenuItem>
         <Divider color="#ccc" />
         <MenuItem onClick={() => navigate('/add-artist')}>
