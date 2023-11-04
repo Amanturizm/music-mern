@@ -95,8 +95,8 @@ const SignUp = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                sx={{ width: '100%' }}
                 required
+                sx={{ width: '100%' }}
                 label="Username"
                 name="username"
                 value={state.username}
@@ -109,6 +109,7 @@ const SignUp = () => {
 
             <Grid item xs={12}>
               <TextField
+                required
                 sx={{ width: '100%' }}
                 label="Display name"
                 name="displayName"
@@ -120,8 +121,8 @@ const SignUp = () => {
 
             <Grid item xs={12}>
               <TextField
-                sx={{ width: '100%' }}
                 required
+                sx={{ width: '100%' }}
                 name="password"
                 label="Password"
                 type="password"
